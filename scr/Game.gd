@@ -11,6 +11,7 @@ var current_turn_index = 0
 var clickable = true
 
 var active_piece
+var apiece
 var dpiece
 
 var player_colors
@@ -171,9 +172,121 @@ func cwl1(apiece, dpiece):
 		#return dpiece
 
 func cwl2(apiece, dpiece):
-	print("Attacking piece is: ", apiece)
-	print("Defending piece is: ", dpiece)
-	pass
+	print("In Chess War L2")
+	print("Level 2 is currently just Level 1 - fix in future!")
+	print("War Level from config is: ", war_level)
+	print("cwl2 - apiece on enter is: ", apiece)
+	print("cwl2 - dpiece on enter is: ", dpiece)
+	$HUD/BattleReport/BattleReport.text = "In Chess War L2\n"
+	$HUD/BattleReport.visible = true
+	var lp1 = 1
+	print("Attacker: ", apiece)
+	attack1 = apiece.current_attack
+	print("Attack1 is: ", attack1)
+	attack1type = apiece.type
+	print("attack1type is: ", attack1type)
+	$HUD/BattleReport/BattleReport.text = $HUD/BattleReport/BattleReport.text + "Attacker: " + str(apiece) + "\n"
+	print("Defender: ", dpiece)
+	defend1 = dpiece.current_defend
+	defend1type = dpiece.type
+	print("Attacker, ", apiece, " has an attack strength of ", attack1)
+	print("Defender, ", dpiece, " has a defend strength of ",defend1)
+	$HUD/BattleReport/BattleReport.text = $HUD/BattleReport/BattleReport.text + "Defender: " + str(dpiece) + "\n"
+	#while (attack1 != 0) && (defend1 != 0):
+	#while (attack1 > 0) && (defend1 > 0):
+	print("cwl2 before while: ", attack1, " | ", defend1)
+	while (attack1 > 0) and (defend1 > 0):
+		# trying to run this loop slower
+		#yield(get_tree().create_timer(1.0), "timeout")
+		for zn in 100000:
+			var zo
+			zo = 0
+			zo = zo + 1
+		print("A1 - Attack = ", attack1, "            |            Defend = ", defend1,"")
+		luck = rng.randi_range(0,8)
+		if luck == 0:
+			print("The attacking ", apiece, " lands a mighty blow!")
+			$HUD/BattleReport/BattleReport.text = $HUD/BattleReport/BattleReport.text + "The attacking " + attack1type + " lands a mighty blow!\n"
+			defend1 = int((defend1 * 5) / 6 )
+			print("defend1 is now: ", defend1)
+		if luck == 1:
+			print("D1 - The defending ", dpiece, " gets in a gallant thrust!")
+			$HUD/BattleReport/BattleReport.text = $HUD/BattleReport/BattleReport.text + "D1 - The defending " + defend1type + " gets in a gallant thrust!\n"
+			if lp1 == 1:
+				attack1 = int(attack1 / 2)
+				print("It does great damage to the attacker!")
+				$HUD/BattleReport/BattleReport.text = $HUD/BattleReport/BattleReport.text + "It does great damage to the attacker!\n"
+				lp1 = 2
+				print("attack1 is now: ", attack1)
+			else:
+				attack1 = int((attack1 * 5) /6)
+				print("attack1 is now: ", attack1)
+		if luck == 2:
+			print("The valiant attacker draws blood.")
+			$HUD/BattleReport/BattleReport.text = $HUD/BattleReport/BattleReport.text + "The valiant attacker draws blood.\n"
+			defend1 = int((defend1 * 4) / 5 )
+			print("defend1 is now: ", defend1)
+		if luck == 3:
+			print("The ", defend1type, " puts up a strong defence and wounds the ", attack1type, "!!")
+			$HUD/BattleReport/BattleReport.text = $HUD/BattleReport/BattleReport.text + "The " + defend1type + " puts up a strong defence and wounds the " + attack1type + "!!\n"
+			attack1 = int((attack1 * 4) / 5)
+			print("attack1 is now: ", attack1)
+		if luck == 4:
+			print("With a mighty cut, the ", attack1type, " wounds the ", defend1type, ".")
+			$HUD/BattleReport/BattleReport.text = $HUD/BattleReport/BattleReport.text + "With a mighty cut, the " + attack1type + " wounds the " + defend1type + ".\n"
+			defend1 = int((defend1 * 9) / 10)
+			print("defend1 is now: ", defend1)
+		if luck == 5:
+			print("The defender lands  a crushing blow!")
+			$HUD/BattleReport/BattleReport.text = $HUD/BattleReport/BattleReport.text + "The defender lands  a crushing blow!\n"
+			attack1 = int((attack1 * 9) /10)
+			print("attack1 is now: ", attack1)
+		if luck == 6:
+			print("OH! Surely the ", defend1type, " cannot long endure such a furious attack.")
+			$HUD/BattleReport/BattleReport.text = $HUD/BattleReport/BattleReport.text + "OH! Surely the " + defend1type + " cannot long endure such a furious attack.\n"
+			defend1 = int((defend1 * 14) / 15)
+			print("defend1 is now: ", defend1)
+		if luck == 7:
+			print("The ", attack1type, "'s attack falters and the ", defend1type, " gets in a blow in return.")
+			$HUD/BattleReport/BattleReport.text = $HUD/BattleReport/BattleReport.text + "The " + attack1type + "'s attack falters and the " + defend1type + " gets in a blow in return.\n"
+			attack1 = int((attack1 * 14) / 15)
+			print("attack1 is now: ", attack1)
+		if luck == 8:
+			print("The combatants take a much needed rest.")
+			$HUD/BattleReport/BattleReport.text = $HUD/BattleReport/BattleReport.text + "The combatants take a much needed rest.\n"
+			print("attack1 is now: ", attack1)
+			print("defend1 is now: ", defend1)
+	print("A2 - Attack = ", attack1, "            |            Defend = ", defend1,"")
+	$HUD/BattleReport/BattleReport.text = $HUD/BattleReport/BattleReport.text + "Attack = " + str(attack1) + "            |            Defend = " + str(defend1) + "\n"
+	print("before defend1 == 0 check, defend1 is now: ", defend1, " attack1 is now: ",attack1)
+	if (defend1 == 0):
+		print("Below should be true")
+		print(defend1==0)
+		print("was above true?")
+		print("defend1 == 0? A3 - Attack = ", attack1, "            |            Defend = ", defend1,"")
+		print("defend1 is: ", defend1)
+		print("The attacking ", attack1type, " defeated the defending ", defend1type, "!")
+		$HUD/BattleReport/BattleReport.text = $HUD/BattleReport/BattleReport.text + "The attacking " + attack1type + " defeated the defending " + defend1type + "!\n"
+		zattackwon = true
+		incrsc = apiece.value
+		if attack1 == 0:
+			attack1 = 1
+			print("defend1 was 0 and attack1 was 0 so we made attack1 equal 1")
+		apiece.current_attack = attack1
+		# we return the piece to kill
+		return dpiece
+	else:
+		print("defend1 != 0? A4 - Attack = ", attack1, "            |            Defend = ", defend1,"")
+		#Defend wins
+		print("D2 - The defending ", defend1type,  " defeated the attacking ", attack1type, " !")
+		$HUD/BattleReport/BattleReport.text = $HUD/BattleReport/BattleReport.text + "D2 - The defending " + defend1type +  " defeated the attacking " + attack1type + " !\n"
+		zattackwon = false
+		incrsc = dpiece.value
+		# we return the piece to kill
+		# - out this back somehow? 
+		# dpiece.current.defend = defend1
+		return apiece
+
 
 
 
@@ -196,6 +309,13 @@ func player_turn(clicked_cell, sync_mult = false):
 			warresult = cwl1(active_piece, dpiece)
 		elif war_level == "Level2":
 			if game_debug: print("\n\n-----In War Level: ", war_level)
+			apiece = active_piece
+			print("Attacker: ", apiece)
+			attack1 = apiece.current_attack
+			print("Attack1 is: ", attack1)
+			attack1type = apiece.type
+			print("attack1type is: ", attack1type)
+			print("calling L2 active_piece, dpiece - ", active_piece, dpiece)
 			warresult = cwl2(active_piece, dpiece)
 		else:
 			# should neve get here but just in case and

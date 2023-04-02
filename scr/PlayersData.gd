@@ -10,6 +10,33 @@ var peer
 var chess_type
 var war_level
 
+# I know I am doing something wrong below but how to fix?
+var kinga = 1
+var kingd = 1
+var kingv = 1
+var kingr = 1
+var queena = 1
+var queend = 1
+var queenv = 1
+var queenr = 1
+var bishopa = 1
+var bishopd = 1
+var bishopv = 1
+var bishopr = 1
+var knighta = 1
+var knightd = 1
+var knightv = 1
+var knightr = 1
+var rooka = 1
+var rookd = 1
+var rookv = 1
+var rookr = 1
+var pawna = 1
+var pawnd = 1
+var pawnv = 1
+var pawnr = 1
+
+
 func call_config ():
 	var config = ConfigFile.new()
 	

@@ -6,6 +6,31 @@ var tile_colors = Dictionary()
 
 var fifty_moves_counter = 0
 
+var kinga
+var kingd
+var kingv
+var kingr
+var queena
+var queend
+var queenv
+var queenr
+var bishopa
+var bishopd
+var bishopv
+var bishopr
+var knighta
+var knightd
+var knightv
+var knightr
+var rooka
+var rookd
+var rookv
+var rookr
+var pawna
+var pawnd
+var pawnv
+var pawnr
+
 onready var promotion_tiles = delete_duplicates(
 	$Mapping.draw_diagonal_line(Vector2(0, -5), 5, 1, 1)
 	+ $Mapping.draw_diagonal_line(Vector2(0, -5), 5, -1, 1)
@@ -14,9 +39,39 @@ onready var promotion_tiles = delete_duplicates(
 
 onready var verticals_1 = $Mapping.draw_diagonal_line(Vector2(-5, -3), 5, 1, -1)
 onready var verticals_2 = $Mapping.draw_diagonal_line(Vector2(5, -3), 4, -1, -1)
+onready var config = get_node('/root/PlayersData').call_config()
+
 
 func _ready():
 	self.Mapping = $Mapping
+	kinga = config.get_value('options', 'kinga')
+	kingd = config.get_value('options', 'kingd')
+	kingv = config.get_value('options', 'kingv')
+	kingr = config.get_value('options', 'kingr')
+	queena = config.get_value('options', 'queena')
+	queend = config.get_value('options', 'queend')
+	queenv = config.get_value('options', 'queenv')
+	queenr = config.get_value('options', 'queenr')
+	bishopa = config.get_value('options', 'bishopa')
+	bishopd = config.get_value('options', 'bishopd')
+	bishopv = config.get_value('options', 'bishopv')
+	bishopr = config.get_value('options', 'bishopr')
+	knighta = config.get_value('options', 'knighta')
+	knightd = config.get_value('options', 'knightd')
+	knightv = config.get_value('options', 'knightv')
+	knightr = config.get_value('options', 'knightr')
+	rooka = config.get_value('options', 'rooka')
+	rookd = config.get_value('options', 'rookd')
+	rookv = config.get_value('options', 'rookv')
+	rookr = config.get_value('options', 'rookr')
+	pawna = config.get_value('options', 'pawna')
+	pawnd = config.get_value('options', 'pawnd')
+	pawnv = config.get_value('options', 'pawnv')
+	pawnr = config.get_value('options', 'pawnr')
+
+
+
+
 
 func draw_map():
 	set_verticals(verticals_1)
@@ -49,12 +104,64 @@ func set_cells(set_tiles, tile_number):
 	for tile in set_tiles:
 		set_cell(tile[0], tile[1], tile_number)
 
+func set_abilities(piece, type):
+	# try setting the pieces abilities
+	match(type):
+		"King":
+			piece.current_attack = kinga
+			piece.current_defend = kingd
+			piece.recuperate = kingr
+			piece.value = kingv
+			piece.max_attack = kinga
+			piece.max_defend = kingd
+		"Queen":
+			piece.current_attack = queena
+			piece.current_defend = queend
+			piece.recuperate = queenr
+			piece.value = queenv
+			piece.max_attack = queena
+			piece.max_defend = queend
+		"Rook":
+			piece.current_attack = rooka
+			piece.current_defend = rookd
+			piece.recuperate = rookr
+			piece.value = rookv
+			piece.max_attack = rooka
+			piece.max_defend = rookd
+		"Bishop":
+			piece.current_attack = bishopa
+			piece.current_defend = bishopd
+			piece.recuperate = bishopr
+			piece.value = bishopv
+			piece.max_attack = bishopa
+			piece.max_defend = bishopd
+		"Knight":
+			piece.current_attack = knighta
+			piece.current_defend = knightd
+			piece.recuperate = knightr
+			piece.value = knightv
+			piece.max_attack = knighta
+			piece.max_defend = knightd
+		"Pawn":
+			piece.current_attack = pawna
+			piece.current_defend = pawnd
+			piece.recuperate = pawnr
+			piece.value = pawnv
+			piece.max_attack = pawna
+			piece.max_defend = pawnd
+
+
+
 func add_piece(piece, tile_position, type, color = null):
 	add_child(piece)
 		
 	piece.tile_position = tile_position
 	piece.position = map_to_world(piece.tile_position)
 	piece.type = type
+	set_abilities(piece, piece.type)
+	if board_debug: print("Piece type in Board.gd is: ", piece.type)
+	# if board_debug: print("In add_piece, piece, piece.tile_position, piece.position, piece.type follows: ", piece, " || ",piece.tile_position, " || ", piece.position, " || ", piece.type)
+
 	piece.visible = true
 	
 	if color == 'black' or color == null and tile_position[1] < 0:

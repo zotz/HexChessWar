@@ -23,7 +23,7 @@ var blackscore
 var incrsc
 var warresult
 var battlechance
-var l1_battlechancediv = 0.75
+var l1_battlechancediv
 var zattackwon = true
 var attack1
 var attack1type
@@ -34,6 +34,8 @@ var rng = RandomNumberGenerator.new()
 var battlecount = 0
 
 onready var war_level = get_node('/root/PlayersData').war_level
+#onready var l1_battlechancediv = get_node('/root/PlayersData').l1_battlechancediv
+onready var config = get_node('/root/PlayersData').call_config()
 
 signal promotion_done
 
@@ -89,13 +91,19 @@ func set_player_colors():
 	
 func _unhandled_input(event):
 	if event is InputEventMouseButton:
+		print("A - InputEventMouseButton just happened")
 		if event.pressed and clickable and turn in player_colors:
+			print("B - this is event.pressed and clickable and turn in player_colors")
 			var clicked_cell = $TileMap.world_to_map(get_global_mouse_position())
+			print("C - clicked cell set to: ", clicked_cell)
 			
 			if clicked_cell in range_of_movement:
+				print("D - clicked_cell is in range_of_movement")
 				range_of_movement = []
 				
+				print("E - calling player_turn")
 				player_turn(clicked_cell)
+				print("F - back from player_turn")
 				
 				var promotion_piece
 				if 'Pawn' == active_piece.type and clicked_cell in $TileMap.promotion_tiles:
@@ -126,6 +134,8 @@ func cwl1(apiece, dpiece):
 	if game_debug: print("In Chess War L1")
 	if game_debug: print("War Level from config is: ", war_level)
 	print("Sending battle report to HUD")
+	#l1_battlechancediv = get_node('/root/PlayersData').l1_battlechancediv
+	l1_battlechancediv = config.get_value('options', 'l1_battlechancediv')
 	$HUD/BattleReport/BattleReport.text = "In Chess War L1\n"
 	$HUD/BattleReport.visible = true
 	print("Sent battle report to HUD and set visible")
@@ -168,6 +178,7 @@ func cwl2(apiece, dpiece):
 
 
 func player_turn(clicked_cell, sync_mult = false):
+	print("G - at top of player_turn")
 	if sync_mult:
 		active_piece = get_node(game_type_node.active_piece_path)
 		
@@ -187,14 +198,21 @@ func player_turn(clicked_cell, sync_mult = false):
 			if game_debug: print("\n\n-----In War Level: ", war_level)
 			warresult = cwl2(active_piece, dpiece)
 		else:
+			# should neve get here but just in case and
+			# to make adding new levels easier
 			warresult = dpiece
 		
 		print("After any battles fought, warresult is: ", warresult)
 
 
-
-
-		$TileMap.kill_piece($TileMap.chessmen_coords[clicked_cell])
+		if zattackwon:
+			print("zattackwon true piece to kill is: ", $TileMap.chessmen_coords[clicked_cell])
+			$TileMap.kill_piece($TileMap.chessmen_coords[clicked_cell])
+		else:
+			# how do I kill the attacker
+			print("zattackwon false piece to kill is: ", warresult)
+			$TileMap.kill_piece(warresult)
+			pass
 				
 	elif 'Pawn' == active_piece.type and clicked_cell in $TileMap.jumped_over_tiles\
 	and clicked_cell in $TileMap.pawn_attack(active_piece, active_piece.tile_position, false):
@@ -204,7 +222,12 @@ func player_turn(clicked_cell, sync_mult = false):
 			var dead_npc_path = str($TileMap.jumped_over_tiles[clicked_cell].get_path())
 			game_type_node.rpc("sync_kill_piece", dead_npc_path)
 
-	$TileMap.move_piece(active_piece, clicked_cell)
+	if zattackwon:
+		print("Attacker won, moving to new location")
+		$TileMap.move_piece(active_piece, clicked_cell)
+	else:
+		print("Defender won, move not needed")
+		zattackwon = true
 	$TileMap.draw_map()
 	$TileMap.update_jumped_over_tiles(active_piece)
 

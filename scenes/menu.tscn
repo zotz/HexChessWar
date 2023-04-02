@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://fonts/NixieOne.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://icons/back.png" type="Texture" id=2]
@@ -36,6 +36,9 @@ resource_name = "RadioButtons"
 
 [sub_resource type="DynamicFont" id=15]
 font_data = ExtResource( 1 )
+
+[sub_resource type="ButtonGroup" id=17]
+resource_name = "RadioLevel"
 
 [node name="Control" type="Control"]
 anchor_top = 0.5
@@ -139,6 +142,18 @@ custom_styles/focus = ExtResource( 4 )
 custom_styles/disabled = ExtResource( 4 )
 custom_styles/normal = ExtResource( 4 )
 text = "Options"
+
+[node name="QuitGame" type="Button" parent="Menu/VBoxContainer"]
+margin_top = 132.0
+margin_right = 400.0
+margin_bottom = 161.0
+custom_fonts/font = SubResource( 1 )
+custom_styles/hover = ExtResource( 4 )
+custom_styles/pressed = ExtResource( 4 )
+custom_styles/focus = ExtResource( 4 )
+custom_styles/disabled = ExtResource( 4 )
+custom_styles/normal = ExtResource( 4 )
+text = "Quit Game"
 
 [node name="LobbyPanel" type="Panel" parent="Menu"]
 visible = false
@@ -260,10 +275,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -250.0
-margin_top = -225.0
-margin_right = 250.0
-margin_bottom = 225.0
+margin_left = -512.0
+margin_top = -260.0
+margin_right = 512.0
+margin_bottom = 330.0
 size_flags_horizontal = 2
 size_flags_vertical = 2
 custom_styles/panel = ExtResource( 4 )
@@ -271,22 +286,58 @@ custom_styles/panel = ExtResource( 4 )
 [node name="VariantsLabel" type="Label" parent="Options"]
 margin_left = 25.0
 margin_top = 25.0
-margin_right = 375.0
-margin_bottom = 132.0
+margin_right = 1009.0
+margin_bottom = 73.0
 rect_min_size = Vector2( 350, 0 )
 custom_fonts/font = SubResource( 16 )
 text = "Choose what variant of hexagonal chess you'd prefer to play.
-
 This setting applies on games you play locally and games you host."
 autowrap = true
 
+[node name="LabelsBCL1" type="Label" parent="Options"]
+margin_left = 662.0
+margin_top = 48.0
+margin_right = 862.0
+margin_bottom = 72.0
+rect_min_size = Vector2( 200, 0 )
+custom_fonts/font = SubResource( 16 )
+text = "Level 1 Battle Chance"
+autowrap = true
+
+[node name="VBC_L1" type="VBoxContainer" parent="Options"]
+anchor_top = -0.068
+anchor_bottom = -0.068
+margin_left = 667.0
+margin_top = 125.12
+margin_right = 949.0
+margin_bottom = 184.12
+
+[node name="HBC_battlechance" type="HBoxContainer" parent="Options/VBC_L1"]
+margin_right = 282.0
+margin_bottom = 24.0
+
+[node name="sb_battlechancediv" type="SpinBox" parent="Options/VBC_L1/HBC_battlechance"]
+margin_right = 74.0
+margin_bottom = 24.0
+max_value = 1.0
+step = 0.01
+
+[node name="Label" type="Label" parent="Options/VBC_L1/HBC_battlechance"]
+margin_left = 78.0
+margin_top = 5.0
+margin_right = 166.0
+margin_bottom = 19.0
+text = "Battle Chance Dividing line
+"
+
 [node name="VBoxContainer" type="VBoxContainer" parent="Options"]
-margin_top = 150.0
-margin_right = 350.0
-margin_bottom = 230.0
+margin_left = 41.0
+margin_top = 80.0
+margin_right = 347.0
+margin_bottom = 160.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Options/VBoxContainer"]
-margin_right = 350.0
+margin_right = 306.0
 margin_bottom = 24.0
 
 [node name="Glinski" type="CheckBox" parent="Options/VBoxContainer/HBoxContainer" groups=["chess_types"]]
@@ -304,7 +355,7 @@ text = "Glinski variant"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="Options/VBoxContainer"]
 margin_top = 28.0
-margin_right = 350.0
+margin_right = 306.0
 margin_bottom = 52.0
 
 [node name="McCooey" type="CheckBox" parent="Options/VBoxContainer/HBoxContainer2" groups=["chess_types"]]
@@ -322,7 +373,7 @@ text = "McCooey variant"
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="Options/VBoxContainer"]
 margin_top = 56.0
-margin_right = 350.0
+margin_right = 306.0
 margin_bottom = 80.0
 
 [node name="Hexofen" type="CheckBox" parent="Options/VBoxContainer/HBoxContainer3" groups=["chess_types"]]
@@ -333,10 +384,559 @@ group = SubResource( 14 )
 [node name="Label" type="Label" parent="Options/VBoxContainer/HBoxContainer3"]
 margin_left = 28.0
 margin_top = 2.0
-margin_right = 262.0
+margin_right = 248.0
 margin_bottom = 21.0
 custom_fonts/font = SubResource( 15 )
 text = "Hexofen (Trubitsyn variant)"
+
+[node name="LevelsLabel" type="Label" parent="Options"]
+margin_left = 26.0
+margin_top = 185.0
+margin_right = 533.0
+margin_bottom = 209.0
+rect_min_size = Vector2( 350, 0 )
+custom_fonts/font = SubResource( 16 )
+text = "Choose what Level of Chess War you want to play."
+autowrap = true
+
+[node name="AbilitiesLabel" type="Label" parent="Options"]
+margin_left = 49.0
+margin_top = 306.0
+margin_right = 556.0
+margin_bottom = 330.0
+rect_min_size = Vector2( 350, 0 )
+custom_fonts/font = SubResource( 16 )
+text = "The \"War Abilities\" of the piece types. Level 2."
+autowrap = true
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="Options"]
+margin_left = 41.0
+margin_top = 214.0
+margin_right = 347.0
+margin_bottom = 294.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Options/VBoxContainer2"]
+margin_right = 306.0
+margin_bottom = 24.0
+
+[node name="Level0" type="CheckBox" parent="Options/VBoxContainer2/HBoxContainer" groups=["war_levels"]]
+margin_right = 24.0
+margin_bottom = 24.0
+group = SubResource( 17 )
+
+[node name="Label" type="Label" parent="Options/VBoxContainer2/HBoxContainer"]
+margin_left = 28.0
+margin_top = 2.0
+margin_right = 83.0
+margin_bottom = 21.0
+custom_fonts/font = SubResource( 15 )
+text = "Level 0"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Options/VBoxContainer2"]
+margin_top = 28.0
+margin_right = 306.0
+margin_bottom = 52.0
+
+[node name="Level1" type="CheckBox" parent="Options/VBoxContainer2/HBoxContainer2" groups=["war_levels"]]
+margin_right = 24.0
+margin_bottom = 24.0
+group = SubResource( 17 )
+
+[node name="Label" type="Label" parent="Options/VBoxContainer2/HBoxContainer2"]
+margin_left = 28.0
+margin_top = 2.0
+margin_right = 79.0
+margin_bottom = 21.0
+custom_fonts/font = SubResource( 15 )
+text = "Level 1"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="Options/VBoxContainer2"]
+margin_top = 56.0
+margin_right = 306.0
+margin_bottom = 80.0
+
+[node name="Level2" type="CheckBox" parent="Options/VBoxContainer2/HBoxContainer3" groups=["war_levels"]]
+margin_right = 24.0
+margin_bottom = 24.0
+group = SubResource( 17 )
+
+[node name="Label" type="Label" parent="Options/VBoxContainer2/HBoxContainer3"]
+margin_left = 28.0
+margin_top = 2.0
+margin_right = 83.0
+margin_bottom = 21.0
+custom_fonts/font = SubResource( 15 )
+text = "Level 2"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Options"]
+margin_left = 5.0
+margin_top = 340.0
+margin_right = 1005.0
+margin_bottom = 480.0
+
+[node name="vbc_king" type="VBoxContainer" parent="Options/HBoxContainer"]
+margin_right = 125.0
+margin_bottom = 140.0
+
+[node name="vars" type="Label" parent="Options/HBoxContainer/vbc_king"]
+margin_right = 125.0
+margin_bottom = 14.0
+text = "King"
+
+[node name="hbc_kinga" type="HBoxContainer" parent="Options/HBoxContainer/vbc_king"]
+margin_top = 18.0
+margin_right = 125.0
+margin_bottom = 42.0
+
+[node name="sb_kinga" type="SpinBox" parent="Options/HBoxContainer/vbc_king/hbc_kinga"]
+margin_right = 74.0
+margin_bottom = 24.0
+max_value = 100000.0
+
+[node name="Label" type="Label" parent="Options/HBoxContainer/vbc_king/hbc_kinga"]
+margin_left = 78.0
+margin_top = 5.0
+margin_right = 118.0
+margin_bottom = 19.0
+text = "Attack"
+
+[node name="hbc_kingd" type="HBoxContainer" parent="Options/HBoxContainer/vbc_king"]
+margin_top = 46.0
+margin_right = 125.0
+margin_bottom = 70.0
+
+[node name="sb_kingd" type="SpinBox" parent="Options/HBoxContainer/vbc_king/hbc_kingd"]
+margin_right = 74.0
+margin_bottom = 24.0
+max_value = 200.0
+
+[node name="Label" type="Label" parent="Options/HBoxContainer/vbc_king/hbc_kingd"]
+margin_left = 78.0
+margin_top = 5.0
+margin_right = 124.0
+margin_bottom = 19.0
+text = "Defend"
+
+[node name="hbc_kingr" type="HBoxContainer" parent="Options/HBoxContainer/vbc_king"]
+margin_top = 74.0
+margin_right = 125.0
+margin_bottom = 98.0
+
+[node name="sb_kingr" type="SpinBox" parent="Options/HBoxContainer/vbc_king/hbc_kingr"]
+margin_right = 74.0
+margin_bottom = 24.0
+max_value = 1.0
+step = 0.01
+
+[node name="Label" type="Label" parent="Options/HBoxContainer/vbc_king/hbc_kingr"]
+margin_left = 78.0
+margin_top = 5.0
+margin_right = 125.0
+margin_bottom = 19.0
+text = "Recupe"
+
+[node name="hbc_kingv" type="HBoxContainer" parent="Options/HBoxContainer/vbc_king"]
+margin_top = 102.0
+margin_right = 125.0
+margin_bottom = 126.0
+
+[node name="sb_kingv" type="SpinBox" parent="Options/HBoxContainer/vbc_king/hbc_kingv"]
+margin_right = 74.0
+margin_bottom = 24.0
+max_value = 1000.0
+
+[node name="Label" type="Label" parent="Options/HBoxContainer/vbc_king/hbc_kingv"]
+margin_left = 78.0
+margin_top = 5.0
+margin_right = 113.0
+margin_bottom = 19.0
+text = "Value"
+
+[node name="vbc_queen" type="VBoxContainer" parent="Options/HBoxContainer"]
+margin_left = 129.0
+margin_right = 254.0
+margin_bottom = 140.0
+
+[node name="vars" type="Label" parent="Options/HBoxContainer/vbc_queen"]
+margin_right = 125.0
+margin_bottom = 14.0
+text = "Queen"
+
+[node name="hbc_queena" type="HBoxContainer" parent="Options/HBoxContainer/vbc_queen"]
+margin_top = 18.0
+margin_right = 125.0
+margin_bottom = 42.0
+
+[node name="sb_queena" type="SpinBox" parent="Options/HBoxContainer/vbc_queen/hbc_queena"]
+margin_right = 74.0
+margin_bottom = 24.0
+max_value = 200.0
+
+[node name="Label" type="Label" parent="Options/HBoxContainer/vbc_queen/hbc_queena"]
+margin_left = 78.0
+margin_top = 5.0
+margin_right = 118.0
+margin_bottom = 19.0
+text = "Attack"
+
+[node name="hbc_queend" type="HBoxContainer" parent="Options/HBoxContainer/vbc_queen"]
+margin_top = 46.0
+margin_right = 125.0
+margin_bottom = 70.0
+
+[node name="sb_queend" type="SpinBox" parent="Options/HBoxContainer/vbc_queen/hbc_queend"]
+margin_right = 74.0
+margin_bottom = 24.0
+
+[node name="Label" type="Label" parent="Options/HBoxContainer/vbc_queen/hbc_queend"]
+margin_left = 78.0
+margin_top = 5.0
+margin_right = 124.0
+margin_bottom = 19.0
+text = "Defend"
+
+[node name="hbc_queenr" type="HBoxContainer" parent="Options/HBoxContainer/vbc_queen"]
+margin_top = 74.0
+margin_right = 125.0
+margin_bottom = 98.0
+
+[node name="sb_queenr" type="SpinBox" parent="Options/HBoxContainer/vbc_queen/hbc_queenr"]
+margin_right = 74.0
+margin_bottom = 24.0
+max_value = 0.75
+step = 0.01
+
+[node name="Label" type="Label" parent="Options/HBoxContainer/vbc_queen/hbc_queenr"]
+margin_left = 78.0
+margin_top = 5.0
+margin_right = 125.0
+margin_bottom = 19.0
+text = "Recupe"
+
+[node name="hbc_queenv" type="HBoxContainer" parent="Options/HBoxContainer/vbc_queen"]
+margin_top = 102.0
+margin_right = 125.0
+margin_bottom = 126.0
+
+[node name="sb_queenv" type="SpinBox" parent="Options/HBoxContainer/vbc_queen/hbc_queenv"]
+margin_right = 74.0
+margin_bottom = 24.0
+
+[node name="Label" type="Label" parent="Options/HBoxContainer/vbc_queen/hbc_queenv"]
+margin_left = 78.0
+margin_top = 5.0
+margin_right = 113.0
+margin_bottom = 19.0
+text = "Value"
+
+[node name="vbc_bishop" type="VBoxContainer" parent="Options/HBoxContainer"]
+margin_left = 258.0
+margin_right = 383.0
+margin_bottom = 140.0
+
+[node name="vars" type="Label" parent="Options/HBoxContainer/vbc_bishop"]
+margin_right = 125.0
+margin_bottom = 14.0
+text = "Bishop"
+
+[node name="hbc_bishopa" type="HBoxContainer" parent="Options/HBoxContainer/vbc_bishop"]
+margin_top = 18.0
+margin_right = 125.0
+margin_bottom = 42.0
+
+[node name="sb_bishopa" type="SpinBox" parent="Options/HBoxContainer/vbc_bishop/hbc_bishopa"]
+margin_right = 74.0
+margin_bottom = 24.0
+max_value = 150.0
+
+[node name="Label" type="Label" parent="Options/HBoxContainer/vbc_bishop/hbc_bishopa"]
+margin_left = 78.0
+margin_top = 5.0
+margin_right = 118.0
+margin_bottom = 19.0
+text = "Attack"
+
+[node name="hbc_bishopd" type="HBoxContainer" parent="Options/HBoxContainer/vbc_bishop"]
+margin_top = 46.0
+margin_right = 125.0
+margin_bottom = 70.0
+
+[node name="sb_bishopd" type="SpinBox" parent="Options/HBoxContainer/vbc_bishop/hbc_bishopd"]
+margin_right = 74.0
+margin_bottom = 24.0
+
+[node name="Label" type="Label" parent="Options/HBoxContainer/vbc_bishop/hbc_bishopd"]
+margin_left = 78.0
+margin_top = 5.0
+margin_right = 124.0
+margin_bottom = 19.0
+text = "Defend"
+
+[node name="hbc_bishopr" type="HBoxContainer" parent="Options/HBoxContainer/vbc_bishop"]
+margin_top = 74.0
+margin_right = 125.0
+margin_bottom = 98.0
+
+[node name="sb_bishopr" type="SpinBox" parent="Options/HBoxContainer/vbc_bishop/hbc_bishopr"]
+margin_right = 74.0
+margin_bottom = 24.0
+max_value = 0.75
+step = 0.01
+
+[node name="Label" type="Label" parent="Options/HBoxContainer/vbc_bishop/hbc_bishopr"]
+margin_left = 78.0
+margin_top = 5.0
+margin_right = 125.0
+margin_bottom = 19.0
+text = "Recupe"
+
+[node name="hbc_bishopv" type="HBoxContainer" parent="Options/HBoxContainer/vbc_bishop"]
+margin_top = 102.0
+margin_right = 125.0
+margin_bottom = 126.0
+
+[node name="sb_bishopv" type="SpinBox" parent="Options/HBoxContainer/vbc_bishop/hbc_bishopv"]
+margin_right = 74.0
+margin_bottom = 24.0
+
+[node name="Label" type="Label" parent="Options/HBoxContainer/vbc_bishop/hbc_bishopv"]
+margin_left = 78.0
+margin_top = 5.0
+margin_right = 113.0
+margin_bottom = 19.0
+text = "Value"
+
+[node name="vbc_knight" type="VBoxContainer" parent="Options/HBoxContainer"]
+margin_left = 387.0
+margin_right = 512.0
+margin_bottom = 140.0
+
+[node name="vars" type="Label" parent="Options/HBoxContainer/vbc_knight"]
+margin_right = 125.0
+margin_bottom = 14.0
+text = "Knight"
+
+[node name="hbc_knighta" type="HBoxContainer" parent="Options/HBoxContainer/vbc_knight"]
+margin_top = 18.0
+margin_right = 125.0
+margin_bottom = 42.0
+
+[node name="sb_knighta" type="SpinBox" parent="Options/HBoxContainer/vbc_knight/hbc_knighta"]
+margin_right = 74.0
+margin_bottom = 24.0
+max_value = 150.0
+
+[node name="Label" type="Label" parent="Options/HBoxContainer/vbc_knight/hbc_knighta"]
+margin_left = 78.0
+margin_top = 5.0
+margin_right = 118.0
+margin_bottom = 19.0
+text = "Attack"
+
+[node name="hbc_knightd" type="HBoxContainer" parent="Options/HBoxContainer/vbc_knight"]
+margin_top = 46.0
+margin_right = 125.0
+margin_bottom = 70.0
+
+[node name="sb_knightd" type="SpinBox" parent="Options/HBoxContainer/vbc_knight/hbc_knightd"]
+margin_right = 74.0
+margin_bottom = 24.0
+
+[node name="Label" type="Label" parent="Options/HBoxContainer/vbc_knight/hbc_knightd"]
+margin_left = 78.0
+margin_top = 5.0
+margin_right = 124.0
+margin_bottom = 19.0
+text = "Defend"
+
+[node name="hbc_knightr" type="HBoxContainer" parent="Options/HBoxContainer/vbc_knight"]
+margin_top = 74.0
+margin_right = 125.0
+margin_bottom = 98.0
+
+[node name="sb_knightr" type="SpinBox" parent="Options/HBoxContainer/vbc_knight/hbc_knightr"]
+margin_right = 74.0
+margin_bottom = 24.0
+max_value = 0.75
+step = 0.01
+
+[node name="Label" type="Label" parent="Options/HBoxContainer/vbc_knight/hbc_knightr"]
+margin_left = 78.0
+margin_top = 5.0
+margin_right = 125.0
+margin_bottom = 19.0
+text = "Recupe"
+
+[node name="hbc_knightv" type="HBoxContainer" parent="Options/HBoxContainer/vbc_knight"]
+margin_top = 102.0
+margin_right = 125.0
+margin_bottom = 126.0
+
+[node name="sb_knightv" type="SpinBox" parent="Options/HBoxContainer/vbc_knight/hbc_knightv"]
+margin_right = 74.0
+margin_bottom = 24.0
+
+[node name="Label" type="Label" parent="Options/HBoxContainer/vbc_knight/hbc_knightv"]
+margin_left = 78.0
+margin_top = 5.0
+margin_right = 113.0
+margin_bottom = 19.0
+text = "Value"
+
+[node name="vbc_rook" type="VBoxContainer" parent="Options/HBoxContainer"]
+margin_left = 516.0
+margin_right = 641.0
+margin_bottom = 140.0
+
+[node name="vars" type="Label" parent="Options/HBoxContainer/vbc_rook"]
+margin_right = 125.0
+margin_bottom = 14.0
+text = "Rook"
+
+[node name="hbc_rooka" type="HBoxContainer" parent="Options/HBoxContainer/vbc_rook"]
+margin_top = 18.0
+margin_right = 125.0
+margin_bottom = 42.0
+
+[node name="sb_rooka" type="SpinBox" parent="Options/HBoxContainer/vbc_rook/hbc_rooka"]
+margin_right = 74.0
+margin_bottom = 24.0
+max_value = 150.0
+
+[node name="Label" type="Label" parent="Options/HBoxContainer/vbc_rook/hbc_rooka"]
+margin_left = 78.0
+margin_top = 5.0
+margin_right = 118.0
+margin_bottom = 19.0
+text = "Attack"
+
+[node name="hbc_rookd" type="HBoxContainer" parent="Options/HBoxContainer/vbc_rook"]
+margin_top = 46.0
+margin_right = 125.0
+margin_bottom = 70.0
+
+[node name="sb_rookd" type="SpinBox" parent="Options/HBoxContainer/vbc_rook/hbc_rookd"]
+margin_right = 74.0
+margin_bottom = 24.0
+
+[node name="Label" type="Label" parent="Options/HBoxContainer/vbc_rook/hbc_rookd"]
+margin_left = 78.0
+margin_top = 5.0
+margin_right = 124.0
+margin_bottom = 19.0
+text = "Defend"
+
+[node name="hbc_rookr" type="HBoxContainer" parent="Options/HBoxContainer/vbc_rook"]
+margin_top = 74.0
+margin_right = 125.0
+margin_bottom = 98.0
+
+[node name="sb_rookr" type="SpinBox" parent="Options/HBoxContainer/vbc_rook/hbc_rookr"]
+margin_right = 74.0
+margin_bottom = 24.0
+max_value = 0.75
+step = 0.01
+
+[node name="Label" type="Label" parent="Options/HBoxContainer/vbc_rook/hbc_rookr"]
+margin_left = 78.0
+margin_top = 5.0
+margin_right = 125.0
+margin_bottom = 19.0
+text = "Recupe"
+
+[node name="hbc_rookv" type="HBoxContainer" parent="Options/HBoxContainer/vbc_rook"]
+margin_top = 102.0
+margin_right = 125.0
+margin_bottom = 126.0
+
+[node name="sb_rookv" type="SpinBox" parent="Options/HBoxContainer/vbc_rook/hbc_rookv"]
+margin_right = 74.0
+margin_bottom = 24.0
+
+[node name="Label" type="Label" parent="Options/HBoxContainer/vbc_rook/hbc_rookv"]
+margin_left = 78.0
+margin_top = 5.0
+margin_right = 113.0
+margin_bottom = 19.0
+text = "Value"
+
+[node name="vbc_pawn" type="VBoxContainer" parent="Options/HBoxContainer"]
+margin_left = 645.0
+margin_right = 770.0
+margin_bottom = 140.0
+
+[node name="vars" type="Label" parent="Options/HBoxContainer/vbc_pawn"]
+margin_right = 125.0
+margin_bottom = 14.0
+text = "Pawn"
+
+[node name="hbc_pawna" type="HBoxContainer" parent="Options/HBoxContainer/vbc_pawn"]
+margin_top = 18.0
+margin_right = 125.0
+margin_bottom = 42.0
+
+[node name="sb_pawna" type="SpinBox" parent="Options/HBoxContainer/vbc_pawn/hbc_pawna"]
+margin_right = 74.0
+margin_bottom = 24.0
+
+[node name="Label" type="Label" parent="Options/HBoxContainer/vbc_pawn/hbc_pawna"]
+margin_left = 78.0
+margin_top = 5.0
+margin_right = 118.0
+margin_bottom = 19.0
+text = "Attack"
+
+[node name="hbc_pawnd" type="HBoxContainer" parent="Options/HBoxContainer/vbc_pawn"]
+margin_top = 46.0
+margin_right = 125.0
+margin_bottom = 70.0
+
+[node name="sb_pawnd" type="SpinBox" parent="Options/HBoxContainer/vbc_pawn/hbc_pawnd"]
+margin_right = 74.0
+margin_bottom = 24.0
+max_value = 75.0
+
+[node name="Label" type="Label" parent="Options/HBoxContainer/vbc_pawn/hbc_pawnd"]
+margin_left = 78.0
+margin_top = 5.0
+margin_right = 124.0
+margin_bottom = 19.0
+text = "Defend"
+
+[node name="hbc_pawnr" type="HBoxContainer" parent="Options/HBoxContainer/vbc_pawn"]
+margin_top = 74.0
+margin_right = 125.0
+margin_bottom = 98.0
+
+[node name="sb_pawnr" type="SpinBox" parent="Options/HBoxContainer/vbc_pawn/hbc_pawnr"]
+margin_right = 74.0
+margin_bottom = 24.0
+max_value = 0.75
+step = 0.01
+
+[node name="Label" type="Label" parent="Options/HBoxContainer/vbc_pawn/hbc_pawnr"]
+margin_left = 78.0
+margin_top = 5.0
+margin_right = 125.0
+margin_bottom = 19.0
+text = "Recupe"
+
+[node name="hbc_pawnv" type="HBoxContainer" parent="Options/HBoxContainer/vbc_pawn"]
+margin_top = 102.0
+margin_right = 125.0
+margin_bottom = 126.0
+
+[node name="sb_pawnv" type="SpinBox" parent="Options/HBoxContainer/vbc_pawn/hbc_pawnv"]
+margin_right = 74.0
+margin_bottom = 24.0
+max_value = 75.0
+
+[node name="Label" type="Label" parent="Options/HBoxContainer/vbc_pawn/hbc_pawnv"]
+margin_left = 78.0
+margin_top = 5.0
+margin_right = 113.0
+margin_bottom = 19.0
+text = "Value"
 
 [node name="Version" type="Label" parent="."]
 anchor_top = 1.0
@@ -354,5 +954,6 @@ align = 1
 [connection signal="pressed" from="Menu/VBoxContainer/Host" to="Menu" method="_on_Host_pressed"]
 [connection signal="pressed" from="Menu/VBoxContainer/Join" to="Menu" method="_on_Join_pressed"]
 [connection signal="pressed" from="Menu/VBoxContainer/Options" to="." method="_on_Options_pressed"]
+[connection signal="pressed" from="Menu/VBoxContainer/QuitGame" to="." method="_on_QuitGame_pressed"]
 [connection signal="text_entered" from="Menu/LobbyPanel/Address" to="Menu" method="_on_Address_text_entered"]
 [connection signal="pressed" from="Menu/LobbyPanel/OkButton" to="Menu" method="_on_OkButton_pressed"]

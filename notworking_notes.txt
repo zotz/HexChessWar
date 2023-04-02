@@ -1,0 +1,9 @@
+Current main branch not working.
+
+I hate to do this but I feel I need to for safety and to at least show what I am trying to do.
+
+Code that was working better but built on an older version of HexChess can be found here:
+
+https://github.com/zotz/bitsandpieces/commit/f48b61787a281253aa6b41adafed6625245f8454
+
+

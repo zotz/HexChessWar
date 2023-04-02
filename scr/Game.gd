@@ -1,5 +1,7 @@
 extends Node2D
 
+var game_debug = true
+
 var range_of_movement = Array()
 
 var turn = "white"
@@ -9,11 +11,29 @@ var current_turn_index = 0
 var clickable = true
 
 var active_piece
+var dpiece
 
 var player_colors
 
 var game_type_node
 var is_multiplayer
+
+var whitescore
+var blackscore
+var incrsc
+var warresult
+var battlechance
+var l1_battlechancediv = 0.75
+var zattackwon = true
+var attack1
+var attack1type
+var defend1
+var defend1type
+var luck
+var rng = RandomNumberGenerator.new()
+var battlecount = 0
+
+onready var war_level = get_node('/root/PlayersData').war_level
 
 signal promotion_done
 
@@ -102,11 +122,78 @@ func _unhandled_input(event):
 					active_piece = piece
 					set_possible_moves()
 
+func cwl1(apiece, dpiece):
+	if game_debug: print("In Chess War L1")
+	if game_debug: print("War Level from config is: ", war_level)
+	print("Sending battle report to HUD")
+	$HUD/BattleReport/BattleReport.text = "In Chess War L1\n"
+	$HUD/BattleReport.visible = true
+	print("Sent battle report to HUD and set visible")
+	if game_debug: print("Attacker: ",apiece)
+	$HUD/BattleReport/BattleReport.text = $HUD/BattleReport/BattleReport.text + "Attacker: " + str(apiece) + "\n"
+	if game_debug: print("Defender: ", dpiece)
+	$HUD/BattleReport/BattleReport.text = $HUD/BattleReport/BattleReport.text + "Defender: " + str(dpiece) + "\n"
+	battlechance = randf()
+	if game_debug: print("Battlechance is: ",battlechance)
+	$HUD/BattleReport/BattleReport.text = $HUD/BattleReport/BattleReport.text + "Battlechance is: "+ str(battlechance) + "\n"
+	#$HUD/Announcement.visible = true
+	if battlechance <= l1_battlechancediv:
+		if game_debug: print("Attack wins with battlechance = ", battlechance)
+		$HUD/BattleReport/BattleReport.text = $HUD/BattleReport/BattleReport.text + "Attack wins with battlechance = " + str(battlechance) + "\n"
+		print("01 - zattackwon is: ", zattackwon)
+		zattackwon = true
+		print("02 - zattackwon is: ", zattackwon)
+		# we return the piece to kill
+		battlecount = battlecount + 1
+		print(battlecount, " battles have now been fought.")
+		return dpiece
+	else:
+		if game_debug: print("Defend wins with battlechance = ", battlechance)
+		$HUD/BattleReport/BattleReport.text = $HUD/BattleReport/BattleReport.text + "Defend wins with battlechance = " + str(battlechance) + "\n"
+		print("03 - zattackwon is: ", zattackwon)
+		zattackwon = false
+		print("04 - zattackwon is: ", zattackwon)
+		# we return the piece to kill
+		battlecount = battlecount + 1
+		print(battlecount, " battles have now been fought.")
+		return apiece
+		#temp pretend attacker won
+		#return dpiece
+
+func cwl2(apiece, dpiece):
+	print("Attacking piece is: ", apiece)
+	print("Defending piece is: ", dpiece)
+	pass
+
+
+
 func player_turn(clicked_cell, sync_mult = false):
 	if sync_mult:
 		active_piece = get_node(game_type_node.active_piece_path)
 		
 	if clicked_cell in $TileMap.chessmen_coords:
+		if game_debug: print("01 - Active piece is: ", active_piece)
+		dpiece = $TileMap.chessmen_coords[clicked_cell]
+		if game_debug: print("01 - dpiece is: ", dpiece)
+
+
+		if war_level == "Level0":
+			if game_debug: print("\n\n-----In War Level: ", war_level)
+			warresult = dpiece
+		elif war_level == "Level1":
+			if game_debug: print("\n\n-----In War Level: ", war_level)
+			warresult = cwl1(active_piece, dpiece)
+		elif war_level == "Level2":
+			if game_debug: print("\n\n-----In War Level: ", war_level)
+			warresult = cwl2(active_piece, dpiece)
+		else:
+			warresult = dpiece
+		
+		print("After any battles fought, warresult is: ", warresult)
+
+
+
+
 		$TileMap.kill_piece($TileMap.chessmen_coords[clicked_cell])
 				
 	elif 'Pawn' == active_piece.type and clicked_cell in $TileMap.jumped_over_tiles\
@@ -120,6 +207,10 @@ func player_turn(clicked_cell, sync_mult = false):
 	$TileMap.move_piece(active_piece, clicked_cell)
 	$TileMap.draw_map()
 	$TileMap.update_jumped_over_tiles(active_piece)
+
+
+
+
 	
 func _on_Promotion_pressed(piece):
 	$TileMap.promote_pawn(active_piece, piece)

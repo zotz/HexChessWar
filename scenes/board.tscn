@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=2]
+[gd_scene load_steps=34 format=2]
 
 [ext_resource path="res://scr/Piece.gd" type="Script" id=2]
 [ext_resource path="res://tiles/black_queen.png" type="Texture" id=3]
@@ -28,6 +28,13 @@
 [sub_resource type="DynamicFont" id=6]
 size = 24
 font_data = ExtResource( 16 )
+
+[sub_resource type="DynamicFontData" id=15]
+font_path = "res://fonts/Russo_One.ttf"
+
+[sub_resource type="DynamicFont" id=14]
+size = 12
+font_data = SubResource( 15 )
 
 [sub_resource type="DynamicFont" id=7]
 font_data = ExtResource( 16 )
@@ -216,6 +223,33 @@ custom_fonts/font = SubResource( 6 )
 text = "White is checkmated"
 align = 1
 valign = 1
+
+[node name="BattleReport" type="Panel" parent="Game/HUD"]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 250.0
+margin_top = -283.0
+margin_right = 496.0
+margin_bottom = 290.0
+size_flags_horizontal = 2
+size_flags_vertical = 2
+custom_styles/panel = ExtResource( 17 )
+
+[node name="BattleReport" type="Label" parent="Game/HUD/BattleReport"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -123.0
+margin_top = -286.5
+margin_right = 133.0
+margin_bottom = 278.5
+theme = SubResource( 12 )
+custom_fonts/font = SubResource( 14 )
+text = "Battle Report"
 
 [node name="EndGame" type="VBoxContainer" parent="Game/HUD"]
 visible = false

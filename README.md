@@ -1,3 +1,12 @@
+#HexChessWar
+HexChessWar adds Chess War features to HexChess.
+
+Level 0 - basically just HexChess game play. The Attacker always wins the move.
+Level 1 - Simple Chess War. The Attacker sometimes loses. (Random chance with configurable odds stacking.
+
+Level 2 - Different pieces have dirrerent abilities/strengths. (Configurable.) A battle is fought for each attempted capture and the winner remains on the board in a weakened condition. Recovery happens each turn.
+
+
 # HexChess
 HexChess is a hexagonal chess program powered with the Godot Engine. It includes several variants of hex chess (Glinski, McCooey, Hexofen) as well as peer-to-peer multiplayer. Currently, it doesn't have any AI options.
 

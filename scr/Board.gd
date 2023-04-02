@@ -1,5 +1,7 @@
 extends "res://scr/Movement.gd"
 
+var board_debug = true
+
 var tile_colors = Dictionary()
 
 var fifty_moves_counter = 0
@@ -101,6 +103,11 @@ func move_piece(piece, new_position):
 	piece.position = map_to_world(new_position)
 	piece.tile_position = new_position
 	chessmen_coords[new_position] = piece
+
+
+
+
+
 
 func promote_pawn(pawn, promotion):
 	kill_piece(pawn)

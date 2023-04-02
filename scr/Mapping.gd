@@ -10,6 +10,7 @@ var black_pawn_tiles = Array()
 var white_pawn_tiles = Array()
  
 onready var chess_type = get_node('/root/PlayersData').chess_type
+onready var war_level = get_node('/root/PlayersData').war_level # is this needed here?
 
 func _ready():
 	place_chessmen()

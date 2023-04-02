@@ -10,7 +10,7 @@ config_version=4
 
 [application]
 
-config/name="HexChess"
+config/name="HexChessWar"
 run/main_scene="res://scenes/menu.tscn"
 config/icon="res://icons/icon.png"
 
@@ -41,7 +41,7 @@ open_map={
 
 [mono]
 
-project/assembly_name="HexChess"
+project/assembly_name="HexChessWar"
 
 [physics]
 

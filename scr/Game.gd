@@ -19,8 +19,8 @@ var player_colors
 var game_type_node
 var is_multiplayer
 
-var whitescore
-var blackscore
+var whitescore = '0'
+var blackscore = '0'
 var incrsc
 var warresult
 var battlechance
@@ -43,6 +43,9 @@ signal promotion_done
 func _ready():
 	$TileMap.draw_map()
 	$TileMap.visible = true
+	if war_level == "Level2":
+		$'../Game/HUD/GameStats/VBoxContainer/HBCWhiteScore'.visible = true
+		$'../Game/HUD/GameStats/VBoxContainer/HBCBlackScore'.visible = true
 	
 	$Camera2D.set_global_position(Vector2(50, 0))
 	
@@ -90,6 +93,18 @@ func set_player_colors():
 	else:	
 		player_colors = get_node('/root/PlayersData').colors
 	
+func get_attack_color():
+		return turn
+
+func get_defend_color():
+	var d_color
+	if turn == 'white':
+		d_color = 'black'
+	else:
+		d_color = 'white'
+	return d_color
+	
+	
 func _unhandled_input(event):
 	if event is InputEventMouseButton:
 		print("A - InputEventMouseButton just happened")
@@ -115,6 +130,10 @@ func _unhandled_input(event):
 					promotion_piece = yield(self, "promotion_done")
 					
 				change_turns()
+				if turn =='white':
+					$'../Game/HUD/GameStats/VBoxContainer/HBCTurn/Turn'.text = 'White'
+				else:
+					$'../Game/HUD/GameStats/VBoxContainer/HBCTurn/Turn'.text = 'Black'
 				
 				if is_multiplayer:
 					game_type_node.sync_multiplayer(clicked_cell)
@@ -134,6 +153,8 @@ func _unhandled_input(event):
 func cwl1(apiece, dpiece):
 	if game_debug: print("In Chess War L1")
 	if game_debug: print("War Level from config is: ", war_level)
+	print("The attacker is a ", apiece.color, apiece.type)
+	print("The defender is a ", dpiece.color, dpiece.type)
 	print("Sending battle report to HUD")
 	#l1_battlechancediv = get_node('/root/PlayersData').l1_battlechancediv
 	l1_battlechancediv = config.get_value('options', 'l1_battlechancediv')
@@ -173,10 +194,11 @@ func cwl1(apiece, dpiece):
 
 func cwl2(apiece, dpiece):
 	print("In Chess War L2")
-	print("Level 2 is currently just Level 1 - fix in future!")
 	print("War Level from config is: ", war_level)
 	print("cwl2 - apiece on enter is: ", apiece)
 	print("cwl2 - dpiece on enter is: ", dpiece)
+	print("The attacker is a ", apiece.color, " ", apiece.type)
+	print("The defender is a ", dpiece.color, " ", dpiece.type)
 	$HUD/BattleReport/BattleReport.text = "In Chess War L2\n"
 	$HUD/BattleReport.visible = true
 	var lp1 = 1
@@ -198,10 +220,16 @@ func cwl2(apiece, dpiece):
 	while (attack1 > 0) and (defend1 > 0):
 		# trying to run this loop slower
 		#yield(get_tree().create_timer(1.0), "timeout")
-		for zn in 100000:
+		# this is a stupid attempt at a delay loop
+		# and it seems to be in the wrong place besides
+		# or something is behavin in  way I do not expect.
+		# I want to slow down battle updates to the HUD
+		#$HUD/BattleReport/BattleReport.text = $HUD/BattleReport/BattleReport.text + Time.get_time_string_from_system() +"==Before delay loop.==\n"
+		for zn in 10000:
 			var zo
 			zo = 0
 			zo = zo + 1
+		#$HUD/BattleReport/BattleReport.text = $HUD/BattleReport/BattleReport.text + "=====After delay loop.==\n"
 		print("A1 - Attack = ", attack1, "            |            Defend = ", defend1,"")
 		luck = rng.randi_range(0,8)
 		if luck == 0:
@@ -269,11 +297,19 @@ func cwl2(apiece, dpiece):
 		$HUD/BattleReport/BattleReport.text = $HUD/BattleReport/BattleReport.text + "The attacking " + attack1type + " defeated the defending " + defend1type + "!\n"
 		zattackwon = true
 		incrsc = apiece.value
+		print("incrsc just assigned apiece.value and is now: ",incrsc)
 		if attack1 == 0:
 			attack1 = 1
 			print("defend1 was 0 and attack1 was 0 so we made attack1 equal 1")
 		apiece.current_attack = attack1
-		# we return the piece to kill
+		print("incrsc is: ", incrsc)
+		if apiece.color == 'white':
+			whitescore = str(int(whitescore) + apiece.value)
+			$'../Game/HUD/GameStats/VBoxContainer/HBCWhiteScore/WhtScoreNum'.text = whitescore
+		else:
+			blackscore = str(int(blackscore) + apiece.value)
+			$'../Game/HUD/GameStats/VBoxContainer/HBCBlackScore/BlkScoreNum'.text = blackscore
+		# we return the piece to kill (loser)
 		return dpiece
 	else:
 		print("defend1 != 0? A4 - Attack = ", attack1, "            |            Defend = ", defend1,"")
@@ -282,6 +318,14 @@ func cwl2(apiece, dpiece):
 		$HUD/BattleReport/BattleReport.text = $HUD/BattleReport/BattleReport.text + "D2 - The defending " + defend1type +  " defeated the attacking " + attack1type + " !\n"
 		zattackwon = false
 		incrsc = dpiece.value
+		print("incrsc just assigned dpiece.value and is now: ",incrsc)
+		print("incrsc is: ", incrsc)
+		if apiece.color == 'white':
+			whitescore = str(int(whitescore) + apiece.value)
+			$'../Game/HUD/GameStats/VBoxContainer/HBCWhiteScore/WhtScoreNum'.text = whitescore
+		else:
+			blackscore = str(int(blackscore) + apiece.value)
+			$'../Game/HUD/GameStats/VBoxContainer/HBCBlackScore/BlkScoreNum'.text = blackscore
 		# we return the piece to kill
 		# - out this back somehow? 
 		# dpiece.current.defend = defend1

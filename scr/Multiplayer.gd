@@ -12,6 +12,9 @@ func multiplayer_configs():
 	gs.rpc_config("draw_possible_moves", 1)
 	gs.rpc_config('threefold_rule', 1)
 	gs.rpc_config("game_over", 1)
+	# ok drew, time to learn / try a bit about rpc stuff
+	gs.rpc_config("whitescore", 1)
+	gs.rpc_config("blackscore", 1)
 	
 	gs.rset_config("clickable", 1)
 	gs.rset_config("range_of_movement", 1)
@@ -28,6 +31,8 @@ func multiplayer_configs():
 	rpc_config("reload_client", 1)
 	rpc_config("set_possible_moves", 1)
 	rpc_config("change_turns", 1)
+	# ok drew, time to learn / try a bit about rpc stuff
+
 	
 func prepare_game():
 	multiplayer_configs()

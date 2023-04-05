@@ -334,6 +334,70 @@ margin_right = 101.0
 margin_bottom = 14.0
 text = "0"
 
+[node name="HBCWhiteWins" type="HBoxContainer" parent="Game/HUD/GameStats/VBoxContainer"]
+margin_top = 18.0
+margin_right = 252.0
+margin_bottom = 32.0
+
+[node name="WhtWinsLabel" type="Label" parent="Game/HUD/GameStats/VBoxContainer/HBCWhiteWins"]
+margin_right = 90.0
+margin_bottom = 14.0
+text = "White Wins    "
+
+[node name="WhtWinsNum" type="Label" parent="Game/HUD/GameStats/VBoxContainer/HBCWhiteWins"]
+margin_left = 94.0
+margin_right = 102.0
+margin_bottom = 14.0
+text = "0"
+
+[node name="HBCBlackWins" type="HBoxContainer" parent="Game/HUD/GameStats/VBoxContainer"]
+margin_top = 36.0
+margin_right = 252.0
+margin_bottom = 50.0
+
+[node name="BlkWinsLabel" type="Label" parent="Game/HUD/GameStats/VBoxContainer/HBCBlackWins"]
+margin_right = 90.0
+margin_bottom = 14.0
+text = "Black  Wins    "
+
+[node name="BlkWinsNum" type="Label" parent="Game/HUD/GameStats/VBoxContainer/HBCBlackWins"]
+margin_left = 94.0
+margin_right = 102.0
+margin_bottom = 14.0
+text = "0"
+
+[node name="HBCAttackWins" type="HBoxContainer" parent="Game/HUD/GameStats/VBoxContainer"]
+margin_top = 54.0
+margin_right = 252.0
+margin_bottom = 68.0
+
+[node name="AttackWinsLabel" type="Label" parent="Game/HUD/GameStats/VBoxContainer/HBCAttackWins"]
+margin_right = 92.0
+margin_bottom = 14.0
+text = "Attack Wins    "
+
+[node name="AttackWinsNum" type="Label" parent="Game/HUD/GameStats/VBoxContainer/HBCAttackWins"]
+margin_left = 96.0
+margin_right = 104.0
+margin_bottom = 14.0
+text = "0"
+
+[node name="HBCDefendWins" type="HBoxContainer" parent="Game/HUD/GameStats/VBoxContainer"]
+margin_top = 72.0
+margin_right = 252.0
+margin_bottom = 86.0
+
+[node name="DefendWinsLabel" type="Label" parent="Game/HUD/GameStats/VBoxContainer/HBCDefendWins"]
+margin_right = 94.0
+margin_bottom = 14.0
+text = "Defend Wins   "
+
+[node name="DefendWinsNum" type="Label" parent="Game/HUD/GameStats/VBoxContainer/HBCDefendWins"]
+margin_left = 98.0
+margin_right = 106.0
+margin_bottom = 14.0
+text = "0"
+
 [node name="EndGame" type="VBoxContainer" parent="Game/HUD"]
 visible = false
 anchor_left = 0.5

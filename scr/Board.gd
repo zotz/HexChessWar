@@ -200,12 +200,14 @@ func place_pieces():
 		initial_pawn_tiles_white.erase(Vector2(0, 2))
 
 func kill_piece(NPC):
+	print("In kill NPC, NPC is: ", NPC)
 	NPC.visible = false
 	chessmen_list.erase(NPC)
 	chessmen_coords.erase(NPC.tile_position)
 	fifty_moves_counter = 0
 
 func move_piece(piece, new_position):
+	print("In move piece passed in piece, new_position as follows: ", piece, new_position)
 	chessmen_coords.erase(piece.tile_position)			
 	piece.position = map_to_world(new_position)
 	piece.tile_position = new_position

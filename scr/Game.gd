@@ -117,19 +117,19 @@ func get_defend_color():
 	
 func _unhandled_input(event):
 	if event is InputEventMouseButton:
-		print("A - InputEventMouseButton just happened")
+		if game_debug: print("A - InputEventMouseButton just happened")
 		if event.pressed and clickable and turn in player_colors:
-			print("B - this is event.pressed and clickable and turn in player_colors")
+			if game_debug: print("B - this is event.pressed and clickable and turn in player_colors")
 			var clicked_cell = $TileMap.world_to_map(get_global_mouse_position())
-			print("C - clicked cell set to: ", clicked_cell)
+			if game_debug: print("C - clicked cell set to: ", clicked_cell)
 			
 			if clicked_cell in range_of_movement:
-				print("D - clicked_cell is in range_of_movement")
+				if game_debug: print("D - clicked_cell is in range_of_movement")
 				range_of_movement = []
 				
-				print("E - calling player_turn")
+				if game_debug: print("E - calling player_turn")
 				player_turn(clicked_cell)
-				print("F - back from player_turn")
+				if game_debug: print("F - back from player_turn")
 				
 				var promotion_piece
 				if 'Pawn' == active_piece.type and clicked_cell in $TileMap.promotion_tiles:
@@ -154,7 +154,7 @@ func _unhandled_input(event):
 				check_for_game_over()
 				
 			elif clicked_cell in $TileMap.chessmen_coords:
-				print("Is this where we first click on a piece to move?")
+				if game_debug: print("Is this where we first click on a piece to move?")
 				var piece = $TileMap.chessmen_coords[clicked_cell]
 				if piece.tile_position == clicked_cell and piece.color == turn:
 					$TileMap.draw_map()
@@ -164,14 +164,14 @@ func _unhandled_input(event):
 func cwl1(apiece, dpiece):
 	if game_debug: print("In Chess War L1")
 	if game_debug: print("War Level from config is: ", war_level)
-	print("The attacker is a ", apiece.color, apiece.type)
-	print("The defender is a ", dpiece.color, dpiece.type)
-	print("Sending battle report to HUD")
+	if game_debug: print("The attacker is a ", apiece.color, apiece.type)
+	if game_debug: print("The defender is a ", dpiece.color, dpiece.type)
+	if game_debug: print("Sending battle report to HUD")
 	#l1_battlechancediv = get_node('/root/PlayersData').l1_battlechancediv
 	l1_battlechancediv = config.get_value('options', 'l1_battlechancediv')
 	$HUD/BattleReport/BattleReport.text = "In Chess War L1\n"
 	$HUD/BattleReport.visible = true
-	print("Sent battle report to HUD and set visible")
+	if game_debug: print("Sent battle report to HUD and set visible")
 	if game_debug: print("Attacker: ",apiece)
 	$HUD/BattleReport/BattleReport.text = $HUD/BattleReport/BattleReport.text + "Attacker: " + str(apiece) + "\n"
 	if game_debug: print("Defender: ", dpiece)
@@ -183,58 +183,58 @@ func cwl1(apiece, dpiece):
 	if battlechance <= l1_battlechancediv:
 		if game_debug: print("Attack wins with battlechance = ", battlechance)
 		$HUD/BattleReport/BattleReport.text = $HUD/BattleReport/BattleReport.text + "Attack wins with battlechance = " + str(battlechance) + "\n"
-		print("01 - zattackwon is: ", zattackwon)
-		print("Setting zattackwon to true in Level: ", war_level)
+		if game_debug: print("01 - zattackwon is: ", zattackwon)
+		if game_debug: print("Setting zattackwon to true in Level: ", war_level)
 		zattackwon = true
-		print("02 - zattackwon is: ", zattackwon)
+		if game_debug: print("02 - zattackwon is: ", zattackwon)
 		# we return the piece to kill
 		battlecount = battlecount + 1
-		print(battlecount, " battles have now been fought.")
+		if game_debug: print(battlecount, " battles have now been fought.")
 		return dpiece
 	else:
 		if game_debug: print("Defend wins with battlechance = ", battlechance)
 		$HUD/BattleReport/BattleReport.text = $HUD/BattleReport/BattleReport.text + "Defend wins with battlechance = " + str(battlechance) + "\n"
-		print("03 - zattackwon is: ", zattackwon)
-		print("Setting zattackwon to false in Level: ", war_level)
+		if game_debug: print("03 - zattackwon is: ", zattackwon)
+		if game_debug: print("Setting zattackwon to false in Level: ", war_level)
 		zattackwon = false
-		print("04 - zattackwon is: ", zattackwon)
+		if game_debug: print("04 - zattackwon is: ", zattackwon)
 		# we return the piece to kill
 		battlecount = battlecount + 1
-		print(battlecount, " battles have now been fought.")
+		if game_debug: print(battlecount, " battles have now been fought.")
 		return apiece
 		#temp pretend attacker won
 		#return dpiece
 
 func cwl2(apiece, dpiece):
-	print("In Chess War L2")
-	print("War Level from config is: ", war_level)
-	print("cwl2 - apiece on enter is: ", apiece.color, apiece)
-	print("cwl2 - dpiece on enter is: ", dpiece.color, dpiece)
-	print("The attacker is a ", apiece.color, " ", apiece.type)
-	print("The defender is a ", dpiece.color, " ", dpiece.type)
+	if game_debug: print("In Chess War L2")
+	if game_debug: print("War Level from config is: ", war_level)
+	if game_debug: print("cwl2 - apiece on enter is: ", apiece.color, apiece)
+	if game_debug: print("cwl2 - dpiece on enter is: ", dpiece.color, dpiece)
+	if game_debug: print("The attacker is a ", apiece.color, " ", apiece.type)
+	if game_debug: print("The defender is a ", dpiece.color, " ", dpiece.type)
 	$HUD/BattleReport/BattleReport.text = "In Chess War L2\n"
 	$HUD/BattleReport.visible = true
 	var lp1 = 1
-	print("Attacker: ", apiece.color, apiece.type)
+	if game_debug: print("Attacker: ", apiece.color, apiece.type)
 	attack1 = apiece.current_attack
-	print("Attack1 is: ", attack1)
+	if game_debug: print("Attack1 is: ", attack1)
 	attack1type = apiece.type
-	print("attack1type is: ", attack1type)
+	if game_debug: print("attack1type is: ", attack1type)
 	$HUD/BattleReport/BattleReport.text = $HUD/BattleReport/BattleReport.text + "Attacker: " + apiece.color + " " + attack1type + "\n"
-	print("Defender: ", dpiece.color, dpiece.type)
+	if game_debug: print("Defender: ", dpiece.color, dpiece.type)
 	defend1 = dpiece.current_defend
 	defend1type = dpiece.type
-	print("Attacker, ", apiece.color, apiece.type, " has an attack strength of ", attack1)
-	print("Defender, ", dpiece.color, dpiece.type, " has a defend strength of ",defend1)
+	if game_debug: print("Attacker, ", apiece.color, apiece.type, " has an attack strength of ", attack1)
+	if game_debug: print("Defender, ", dpiece.color, dpiece.type, " has a defend strength of ",defend1)
 	$HUD/BattleReport/BattleReport.text = $HUD/BattleReport/BattleReport.text + "Defender: " + dpiece.color + " " + defend1type + "\n"
 	#while (attack1 != 0) && (defend1 != 0):
 	#while (attack1 > 0) && (defend1 > 0):
-	print("cwl2 before while: ", attack1, " | ", defend1)
+	if game_debug: print("cwl2 before while: ", attack1, " | ", defend1)
 	var battlerounds = 0
 	var battlereportrounds = 15
 	while (attack1 > 0) and (defend1 > 0):
 		# trying to run this loop slower
-		print("Trying to yeild for a time...")
+		if game_debug: print("Trying to yeild for a time...")
 		yield(get_tree().create_timer(0.4), "timeout")
 		# this is a stupid attempt at a delay loop
 		# and it seems to be in the wrong place besides
@@ -246,100 +246,100 @@ func cwl2(apiece, dpiece):
 		#	zo = 0
 		#	zo = zo + 1
 		#$HUD/BattleReport/BattleReport.text = $HUD/BattleReport/BattleReport.text + "=====After delay loop.==\n"
-		print("A1 - Attack = ", attack1, "            |            Defend = ", defend1,"")
+		if game_debug: print("A1 - Attack = ", attack1, "            |            Defend = ", defend1,"")
 		luck = rng.randi_range(0,8)
 		if luck == 0:
-			print("The attacking ", apiece.color, " ", apiece.type, " lands a mighty blow!")
+			if game_debug: print("The attacking ", apiece.color, " ", apiece.type, " lands a mighty blow!")
 			$HUD/BattleReport/BattleReport.text = $HUD/BattleReport/BattleReport.text + "The attacking " + apiece.color + " " + attack1type + " lands a mighty blow!\n"
 			defend1 = int((defend1 * 5) / 6 )
-			print("defend1 is now: ", defend1)
+			if game_debug: print("defend1 is now: ", defend1)
 		if luck == 1:
-			print("D1 - The defending ", dpiece, " gets in a gallant thrust!")
+			if game_debug: print("D1 - The defending ", dpiece, " gets in a gallant thrust!")
 			$HUD/BattleReport/BattleReport.text = $HUD/BattleReport/BattleReport.text + "The defending " + dpiece.color + " " + defend1type + " gets in a gallant thrust!\n"
 			if lp1 == 1:
 				attack1 = int(attack1 / 2)
-				print("It does great damage to the attacker!")
+				if game_debug: print("It does great damage to the attacker!")
 				$HUD/BattleReport/BattleReport.text = $HUD/BattleReport/BattleReport.text + "It does great damage to the attacker!\n"
 				lp1 = 2
-				print("attack1 is now: ", attack1)
+				if game_debug: print("attack1 is now: ", attack1)
 			else:
 				attack1 = int((attack1 * 5) /6)
-				print("attack1 is now: ", attack1)
+				if game_debug: print("attack1 is now: ", attack1)
 		if luck == 2:
-			print("The valiant attacker draws blood.")
+			if game_debug: print("The valiant attacker draws blood.")
 			$HUD/BattleReport/BattleReport.text = $HUD/BattleReport/BattleReport.text + "The valiant attacking " + apiece.color + " " + apiece.type + " draws blood.\n"
 			defend1 = int((defend1 * 4) / 5 )
-			print("defend1 is now: ", defend1)
+			if game_debug: print("defend1 is now: ", defend1)
 		if luck == 3:
-			print("The " + dpiece.color + " " + defend1type, " puts up a strong defence and wounds the " + apiece.color + " " + attack1type + "!!")
+			if game_debug: print("The " + dpiece.color + " " + defend1type, " puts up a strong defence and wounds the " + apiece.color + " " + attack1type + "!!")
 			$HUD/BattleReport/BattleReport.text = $HUD/BattleReport/BattleReport.text + "The " + dpiece.color + " " + defend1type + " puts up a strong defence and wounds the " + apiece.color + " " + attack1type + "!!\n"
 			attack1 = int((attack1 * 4) / 5)
-			print("attack1 is now: ", attack1)
+			if game_debug: print("attack1 is now: ", attack1)
 		if luck == 4:
-			print("With a mighty cut, the ", attack1type, " wounds the ", defend1type, ".")
+			if game_debug: print("With a mighty cut, the ", attack1type, " wounds the ", defend1type, ".")
 			$HUD/BattleReport/BattleReport.text = $HUD/BattleReport/BattleReport.text + "With a mighty cut, the " + apiece.color + " " + attack1type + " wounds the " + dpiece.color + " " + defend1type + ".\n"
 			defend1 = int((defend1 * 9) / 10)
-			print("defend1 is now: ", defend1)
+			if game_debug: print("defend1 is now: ", defend1)
 		if luck == 5:
-			print("The defender lands  a crushing blow!")
+			if game_debug: print("The defender lands  a crushing blow!")
 			$HUD/BattleReport/BattleReport.text = $HUD/BattleReport/BattleReport.text + "The defending " + dpiece.color + " " + defend1type + " lands  a crushing blow!\n"
 			attack1 = int((attack1 * 9) /10)
-			print("attack1 is now: ", attack1)
+			if game_debug: print("attack1 is now: ", attack1)
 		if luck == 6:
-			print("OH! Surely the ", defend1type, " cannot long endure such a furious attack.")
+			if game_debug: print("OH! Surely the ", defend1type, " cannot long endure such a furious attack.")
 			$HUD/BattleReport/BattleReport.text = $HUD/BattleReport/BattleReport.text + "OH! Surely the " + dpiece.color + " " + defend1type + " cannot long endure such a furious attack.\n"
 			defend1 = int((defend1 * 14) / 15)
-			print("defend1 is now: ", defend1)
+			if game_debug: print("defend1 is now: ", defend1)
 		if luck == 7:
-			print("The ", attack1type, "'s attack falters and the ", defend1type, " gets in a blow in return.")
+			if game_debug: print("The ", attack1type, "'s attack falters and the ", defend1type, " gets in a blow in return.")
 			$HUD/BattleReport/BattleReport.text = $HUD/BattleReport/BattleReport.text + "The " + apiece.color + " " + attack1type + "'s attack falters and the " + dpiece.color + " " + defend1type + " gets in a blow in return.\n"
 			attack1 = int((attack1 * 14) / 15)
-			print("attack1 is now: ", attack1)
+			if game_debug: print("attack1 is now: ", attack1)
 		if luck == 8:
-			print("The combatants take a much needed rest.")
+			if game_debug: print("The combatants take a much needed rest.")
 			$HUD/BattleReport/BattleReport.text = $HUD/BattleReport/BattleReport.text + "The combatants take a much needed rest.\n"
-			print("attack1 is now: ", attack1)
-			print("defend1 is now: ", defend1)
+			if game_debug: print("attack1 is now: ", attack1)
+			if game_debug: print("defend1 is now: ", defend1)
 		battlerounds = battlerounds +1
-		print("battlerounds is now: ", battlerounds)
+		if game_debug: print("battlerounds is now: ", battlerounds)
 		if battlerounds == battlereportrounds:
 			battlerounds = 0
 			$HUD/BattleReport/BattleReport.text = "The battle continues.\n"
-	print("A2 - Attack = ", attack1, "            |            Defend = ", defend1,"")
+	if game_debug: print("A2 - Attack = ", attack1, "            |            Defend = ", defend1,"")
 	$HUD/BattleReport/BattleReport.text = $HUD/BattleReport/BattleReport.text + "Attack = " + apiece.color + " " + attack1type + "            |            Defend = " + str(defend1) + "\n"
-	print("before defend1 == 0 check, defend1 is now: ", defend1, " attack1 is now: ",attack1)
+	if game_debug: print("before defend1 == 0 check, defend1 is now: ", defend1, " attack1 is now: ",attack1)
 	if (defend1 == 0):
 		# ATTACK WINS
 		attackwins = str(int(attackwins) + 1)
 		$'../Game/HUD/GameStats/VBoxContainer/HBCAttackWins/AttackWinsNum'.text = attackwins
-		print("Below should be true")
-		print(defend1==0)
-		print("was above true?")
-		print("defend1 == 0? A3 - Attack = ", attack1, "            |            Defend = ", defend1,"")
-		print("defend1 is: ", defend1)
-		print("The attacking ", attack1type, " defeated the defending ", defend1type, "!")
+		if game_debug: print("Below should be true")
+		if game_debug: print(defend1==0)
+		if game_debug: print("was above true?")
+		if game_debug: print("defend1 == 0? A3 - Attack = ", attack1, "            |            Defend = ", defend1,"")
+		if game_debug: print("defend1 is: ", defend1)
+		if game_debug: print("The attacking ", attack1type, " defeated the defending ", defend1type, "!")
 		$HUD/BattleReport/BattleReport.text = $HUD/BattleReport/BattleReport.text + "The attacking " + apiece.color + " " + attack1type + " defeated the defending " + dpiece.color + " " + defend1type + "!\n"
-		print("Setting zattackwon to true in Level: ", war_level)
+		if game_debug: print("Setting zattackwon to true in Level: ", war_level)
 		zattackwon = true
 		incrsc = apiece.value
-		print("incrsc just assigned apiece.value and is now: ",incrsc)
+		if game_debug: print("incrsc just assigned apiece.value and is now: ",incrsc)
 		if attack1 == 0:
 			attack1 = 1
-			print("defend1 was 0 and attack1 was 0 so we made attack1 equal 1")
+			if game_debug: print("defend1 was 0 and attack1 was 0 so we made attack1 equal 1")
 		apiece.current_attack = attack1
-		print("incrsc is: ", incrsc)
+		if game_debug: print("incrsc is: ", incrsc)
 		if apiece.color == 'white':
 			whitescore = str(int(whitescore) + dpiece.value)
 			$'../Game/HUD/GameStats/VBoxContainer/HBCWhiteScore/WhtScoreNum'.text = whitescore
-			print("whitewins is: ", whitewins)
+			if game_debug: print("whitewins is: ", whitewins)
 			whitewins = str(int(whitewins) + 1)
-			print("whitewins is: ", whitewins)
+			if game_debug: print("whitewins is: ", whitewins)
 			$'../Game/HUD/GameStats/VBoxContainer/HBCWhiteWins/WhtWinsNum'.text = whitewins
 		else:
 			blackscore = str(int(blackscore) + dpiece.value)
 			$'../Game/HUD/GameStats/VBoxContainer/HBCBlackScore/BlkScoreNum'.text = blackscore
 			blackwins = str(int(blackwins) + 1)
-			print("whitewins is: ", blackwins)
+			if game_debug: print("whitewins is: ", blackwins)
 			$'../Game/HUD/GameStats/VBoxContainer/HBCBlackWins/BlkWinsNum'.text = blackwins
 		# we return the piece to kill (loser)
 		return dpiece
@@ -347,20 +347,20 @@ func cwl2(apiece, dpiece):
 		#DEFEND WINS
 		defendwins = str(int(defendwins) + 1)
 		$'../Game/HUD/GameStats/VBoxContainer/HBCDefendWins/DefendWinsNum'.text = defendwins
-		print("defend1 != 0? A4 - Attack = ", attack1, "            |            Defend = ", defend1,"")
-		print("D2 - The defending ", defend1type,  " defeated the attacking ", attack1type, " !")
+		if game_debug: print("defend1 != 0? A4 - Attack = ", attack1, "            |            Defend = ", defend1,"")
+		if game_debug: print("D2 - The defending ", defend1type,  " defeated the attacking ", attack1type, " !")
 		$HUD/BattleReport/BattleReport.text = $HUD/BattleReport/BattleReport.text + "The defending " + dpiece.color + " " + defend1type +  " defeated the attacking " + apiece.color + " " + attack1type + " !\n"
-		print("Setting zattackwon to false in Level: ", war_level)
+		if game_debug: print("Setting zattackwon to false in Level: ", war_level)
 		zattackwon = false
 		incrsc = dpiece.value
-		print("incrsc just assigned dpiece.value and is now: ",incrsc)
-		print("incrsc is: ", incrsc)
+		if game_debug: print("incrsc just assigned dpiece.value and is now: ",incrsc)
+		if game_debug: print("incrsc is: ", incrsc)
 		if apiece.color == 'white':
 			blackscore = str(int(blackscore) + apiece.value)
 			$'../Game/HUD/GameStats/VBoxContainer/HBCBlackScore/BlkScoreNum'.text = blackscore
-			print("blackwins is: ", blackwins)
+			if game_debug: print("blackwins is: ", blackwins)
 			blackwins = str(int(blackwins) + 1)
-			print("blackwins is: ", blackwins)
+			if game_debug: print("blackwins is: ", blackwins)
 			$'../Game/HUD/GameStats/VBoxContainer/HBCBlackWins/BlkWinsNum'.text = blackwins
 			
 		else:
@@ -375,7 +375,7 @@ func cwl2(apiece, dpiece):
 
 
 func player_turn(clicked_cell, sync_mult = false):
-	print("G - at top of player_turn")
+	if game_debug: print("G - at top of player_turn")
 	if sync_mult:
 		active_piece = get_node(game_type_node.active_piece_path)
 		
@@ -394,29 +394,32 @@ func player_turn(clicked_cell, sync_mult = false):
 		elif war_level == "Level2":
 			if game_debug: print("\n\n-----In War Level: ", war_level)
 			apiece = active_piece
-			print("Attacker: ", apiece)
+			if game_debug: print("Attacker: ", apiece)
 			attack1 = apiece.current_attack
-			print("Attack1 is: ", attack1)
+			if game_debug: print("Attack1 is: ", attack1)
 			attack1type = apiece.type
-			print("attack1type is: ", attack1type)
-			print("calling L2 active_piece, dpiece - ", active_piece, dpiece)
+			if game_debug: print("attack1type is: ", attack1type)
+			if game_debug: print("calling L2 active_piece, dpiece - ", active_piece, dpiece)
 			warresult = cwl2(active_piece, dpiece)
 		else:
 			# should neve get here but just in case and
 			# to make adding new levels easier
-			print("If we got here, something went wrong, pretend.")
+			if game_debug: print("If we got here, something went wrong, pretend.")
 			warresult = dpiece
 		
-		print("After any battles fought, warresult is: ", warresult)
+		if game_debug: print("After any battles fought, warresult is: ", warresult)
 
 
 		if zattackwon:
-			print("zattackwon true piece to kill is: ", $TileMap.chessmen_coords[clicked_cell])
-			$TileMap.kill_piece($TileMap.chessmen_coords[clicked_cell])
+			if game_debug: print("zattackwon true piece to kill is: ", $TileMap.chessmen_coords[clicked_cell])
+			if game_debug: print("zattackwon - Gonna try kill: ", warresult)
+			#$TileMap.kill_piece($TileMap.chessmen_coords[clicked_cell])
+			#$TileMap.kill_piece(warresult)
 		else:
 			# how do I kill the attacker
 			# something is wrong, the attacker is still showing on the board.
-			print("zattackwon false piece to kill is: ", warresult)
+			if game_debug: print("zattackwon false piece to kill is: ", warresult)
+			if game_debug: print("zattackwon false - Gonna try kill: ", warresult)
 			$TileMap.kill_piece(warresult)
 			pass
 				
@@ -432,12 +435,12 @@ func player_turn(clicked_cell, sync_mult = false):
 	#$TileMap.draw_map()
 	# something may be wrong with theis zattackwon if logic...
 	if zattackwon:
-		print("Attacker won, moving to new location")
+		if game_debug: print("Attacker won, moving to new location")
 		$TileMap.move_piece(active_piece, clicked_cell)
 		$TileMap.draw_map()
 		$TileMap.update_jumped_over_tiles(active_piece)
 	else:
-		print("Defender won, move not needed")
+		if game_debug: print("Defender won, move not needed")
 		zattackwon = true
 		$TileMap.draw_map()
 		$TileMap.update_jumped_over_tiles(active_piece)

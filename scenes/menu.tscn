@@ -314,19 +314,18 @@ margin_bottom = 184.12
 
 [node name="HBC_battlechance" type="HBoxContainer" parent="Options/VBC_L1"]
 margin_right = 282.0
-margin_bottom = 24.0
+margin_bottom = 31.0
 
 [node name="sb_battlechancediv" type="SpinBox" parent="Options/VBC_L1/HBC_battlechance"]
 margin_right = 74.0
-margin_bottom = 24.0
+margin_bottom = 31.0
 max_value = 1.0
 step = 0.01
 
 [node name="Label" type="Label" parent="Options/VBC_L1/HBC_battlechance"]
 margin_left = 78.0
-margin_top = 5.0
-margin_right = 166.0
-margin_bottom = 19.0
+margin_right = 250.0
+margin_bottom = 31.0
 text = "Battle Chance Dividing line
 "
 

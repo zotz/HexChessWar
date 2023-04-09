@@ -1,5 +1,8 @@
 extends Control
 
+var menu_debug = false
+# if menu_debug:  
+
 var kinga
 var kingd
 var kingv
@@ -31,7 +34,7 @@ onready var config = get_node('/root/PlayersData').call_config()
 
 func _ready():
 	$Menu/VBoxContainer/Local.grab_focus()
-	print("In menu.gd, ready!")
+	if menu_debug:print("In menu.gd, ready!")
 	#print("kinga is now: ", kinga)
 	kinga = config.get_value('options', 'kinga')
 	kingd = config.get_value('options', 'kingd')
@@ -71,8 +74,8 @@ func _on_Local_pressed():
 	get_tree().change_scene("res://scenes/board.tscn")
 
 func _on_Options_pressed():
-	print("In Menu, pressed Optioons.")
-	print("kinga is now: ", kinga)
+	if menu_debug:print("In Menu, pressed Options.")
+	if menu_debug:print("kinga is now: ", kinga)
 	$Menu.visible = false
 	$ColorRect/BackPanel.visible = true
 	$Options.visible = true
@@ -93,8 +96,8 @@ func _on_Options_pressed():
 			break
 
 
-	print("In Menu, pressed Edit Config.")
-	print("kinga is now: ", kinga)
+	if menu_debug:print("In Menu, pressed Edit Config.")
+	if menu_debug:print("kinga is now: ", kinga)
 	#$ConfigColorRect/PHVBC/PHTHBC/KingHolderVBC/KingValsVBC/KingdHBC/sb_kingd.value = config.get_value('options', 'kingd')
 	$Options/HBoxContainer/vbc_king/hbc_kinga/sb_kinga.value = kinga
 	$Options/HBoxContainer/vbc_king/hbc_kingd/sb_kingd.value = kingd
@@ -195,5 +198,5 @@ func _on_BackPanel_pressed():
 
 
 func _on_QuitGame_pressed():
-	print("In Menu, pressed Quit Game.")
+	if menu_debug:print("In Menu, pressed Quit Game.")
 	get_tree().quit()

@@ -1,0 +1,169 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scr/BattleReport.gd" type="Script" id=1]
+
+[node name="BattleReport" type="PopupPanel"]
+margin_right = 800.0
+margin_bottom = 8.0
+script = ExtResource( 1 )
+
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="BattleReport" type="Panel" parent="HUD"]
+visible = false
+margin_left = 200.0
+margin_right = 800.0
+margin_bottom = 900.0
+
+[node name="BRLabel" type="RichTextLabel" parent="HUD/BattleReport"]
+margin_right = 600.0
+margin_bottom = 800.0
+custom_colors/default_color = Color( 0.0941176, 0.847059, 0.87451, 1 )
+bbcode_enabled = true
+bbcode_text = " [color=white]Battle  [/color][color=blue]
+Report[/color]"
+text = " Battle  
+Report"
+
+[node name="BRLabel-01" type="Label" parent="HUD/BattleReport"]
+visible = false
+margin_right = 40.0
+margin_bottom = 14.0
+text = "Battle Report Lbl"
+
+[node name="OKButton" type="Button" parent="HUD/BattleReport"]
+margin_left = 154.0
+margin_top = 765.0
+margin_right = 257.0
+margin_bottom = 785.0
+text = "Back To Game"
+icon_align = 1
+
+[node name="BTGameStats" type="Panel" parent="HUD"]
+visible = false
+margin_top = 3.0
+margin_right = 200.0
+margin_bottom = 903.0
+
+[node name="Label" type="Label" parent="HUD/BTGameStats"]
+margin_right = 73.0
+margin_bottom = 18.0
+text = "Game Stats"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HUD/BTGameStats"]
+margin_top = 18.0
+margin_right = 252.0
+margin_bottom = 324.0
+
+[node name="HBCTurn" type="HBoxContainer" parent="HUD/BTGameStats/VBoxContainer"]
+margin_right = 252.0
+margin_bottom = 14.0
+
+[node name="PlayersTurn" type="Label" parent="HUD/BTGameStats/VBoxContainer/HBCTurn"]
+margin_right = 81.0
+margin_bottom = 14.0
+text = "Player's Turn"
+
+[node name="Turn" type="Label" parent="HUD/BTGameStats/VBoxContainer/HBCTurn"]
+margin_left = 85.0
+margin_right = 123.0
+margin_bottom = 14.0
+text = "White"
+
+[node name="HBCWhiteScore" type="HBoxContainer" parent="HUD/BTGameStats/VBoxContainer"]
+margin_top = 18.0
+margin_right = 252.0
+margin_bottom = 32.0
+
+[node name="WhtScoreLabel" type="Label" parent="HUD/BTGameStats/VBoxContainer/HBCWhiteScore"]
+margin_right = 77.0
+margin_bottom = 14.0
+text = "White Score"
+
+[node name="WhtScoreNum" type="Label" parent="HUD/BTGameStats/VBoxContainer/HBCWhiteScore"]
+margin_left = 81.0
+margin_right = 89.0
+margin_bottom = 14.0
+text = "0"
+
+[node name="HBCBlackScore" type="HBoxContainer" parent="HUD/BTGameStats/VBoxContainer"]
+margin_top = 36.0
+margin_right = 252.0
+margin_bottom = 50.0
+
+[node name="BlkScoreLabel" type="Label" parent="HUD/BTGameStats/VBoxContainer/HBCBlackScore"]
+margin_right = 73.0
+margin_bottom = 14.0
+text = "Black Score"
+
+[node name="BlkScoreNum" type="Label" parent="HUD/BTGameStats/VBoxContainer/HBCBlackScore"]
+margin_left = 77.0
+margin_right = 85.0
+margin_bottom = 14.0
+text = "0"
+
+[node name="HBCWhiteWins" type="HBoxContainer" parent="HUD/BTGameStats/VBoxContainer"]
+margin_top = 54.0
+margin_right = 252.0
+margin_bottom = 68.0
+
+[node name="WhtWinsLabel" type="Label" parent="HUD/BTGameStats/VBoxContainer/HBCWhiteWins"]
+margin_right = 74.0
+margin_bottom = 14.0
+text = "White Wins"
+
+[node name="WhtWinsNum" type="Label" parent="HUD/BTGameStats/VBoxContainer/HBCWhiteWins"]
+margin_left = 78.0
+margin_right = 86.0
+margin_bottom = 14.0
+text = "0"
+
+[node name="HBCBlackWins" type="HBoxContainer" parent="HUD/BTGameStats/VBoxContainer"]
+margin_top = 72.0
+margin_right = 252.0
+margin_bottom = 86.0
+
+[node name="BlkWinsLabel" type="Label" parent="HUD/BTGameStats/VBoxContainer/HBCBlackWins"]
+margin_right = 70.0
+margin_bottom = 14.0
+text = "Black Wins"
+
+[node name="BlkWinsNum" type="Label" parent="HUD/BTGameStats/VBoxContainer/HBCBlackWins"]
+margin_left = 74.0
+margin_right = 82.0
+margin_bottom = 14.0
+text = "0"
+
+[node name="HBCAttackWins" type="HBoxContainer" parent="HUD/BTGameStats/VBoxContainer"]
+margin_top = 90.0
+margin_right = 252.0
+margin_bottom = 104.0
+
+[node name="AttackWinsLabel" type="Label" parent="HUD/BTGameStats/VBoxContainer/HBCAttackWins"]
+margin_right = 76.0
+margin_bottom = 14.0
+text = "Attack Wins"
+
+[node name="AttackWinsNum" type="Label" parent="HUD/BTGameStats/VBoxContainer/HBCAttackWins"]
+margin_left = 80.0
+margin_right = 88.0
+margin_bottom = 14.0
+text = "0"
+
+[node name="HBCDefendWins" type="HBoxContainer" parent="HUD/BTGameStats/VBoxContainer"]
+margin_top = 108.0
+margin_right = 252.0
+margin_bottom = 122.0
+
+[node name="DefendWinsLabel" type="Label" parent="HUD/BTGameStats/VBoxContainer/HBCDefendWins"]
+margin_right = 82.0
+margin_bottom = 14.0
+text = "Defend Wins"
+
+[node name="DefendWinsNum" type="Label" parent="HUD/BTGameStats/VBoxContainer/HBCDefendWins"]
+margin_left = 86.0
+margin_right = 94.0
+margin_bottom = 14.0
+text = "0"
+
+[connection signal="pressed" from="HUD/BattleReport/OKButton" to="." method="_on_OKButton_pressed"]

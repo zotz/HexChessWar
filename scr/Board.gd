@@ -1,5 +1,7 @@
 extends "res://scr/Movement.gd"
 
+# Board.gd ?
+
 var board_debug = false
 
 var tile_colors = Dictionary()
@@ -200,14 +202,20 @@ func place_pieces():
 		initial_pawn_tiles_white.erase(Vector2(0, 2))
 
 func kill_piece(NPC):
-	if board_debug: print("In kill NPC, NPC is: ", NPC)
-	NPC.visible = false
+	if board_debug: print("In kill_piece(NPC), NPC is: ", NPC)
+	if NPC != null:
+		print("Trying NPC.visible = false")
+		NPC.visible = false
+		print("Trying: chessmen_coords.erase(NPC.tile_position")
+		chessmen_coords.erase(NPC.tile_position)
+	print("Trying: chessmen_list.erase(NPC)")
 	chessmen_list.erase(NPC)
-	chessmen_coords.erase(NPC.tile_position)
+	#print("Trying: chessmen_coords.erase(NPC.tile_position")
+	#chessmen_coords.erase(NPC.tile_position)
 	fifty_moves_counter = 0
 
 func move_piece(piece, new_position):
-	if board_debug: print("In move piece passed in piece, new_position as follows: ", piece, new_position)
+	if board_debug: print("In move_piece passed in piece, new_position as follows: ", piece, new_position)
 	chessmen_coords.erase(piece.tile_position)			
 	piece.position = map_to_world(new_position)
 	piece.tile_position = new_position

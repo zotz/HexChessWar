@@ -2,6 +2,8 @@ extends Node
 
 var colors = ['white', 'black']
 
+var rng = RandomNumberGenerator.new()
+
 var master_color 
 var puppet_color 
 
@@ -9,6 +11,9 @@ var peer
 
 var chess_type
 var war_level
+
+func get_rng():
+	return rng
 
 # I know I am doing something wrong below but how to fix?
 var kinga = 1

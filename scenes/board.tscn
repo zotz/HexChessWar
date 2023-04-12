@@ -1,5 +1,6 @@
-[gd_scene load_steps=34 format=2]
+[gd_scene load_steps=35 format=2]
 
+[ext_resource path="res://scenes/BattleReport.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scr/Piece.gd" type="Script" id=2]
 [ext_resource path="res://tiles/black_queen.png" type="Texture" id=3]
 [ext_resource path="res://icons/back.png" type="Texture" id=4]
@@ -224,7 +225,7 @@ text = "White is checkmated"
 align = 1
 valign = 1
 
-[node name="BattleReport" type="Panel" parent="Game/HUD"]
+[node name="BattleReport1" type="Panel" parent="Game/HUD"]
 visible = false
 anchor_left = 0.5
 anchor_top = 0.5
@@ -238,7 +239,7 @@ size_flags_horizontal = 2
 size_flags_vertical = 2
 custom_styles/panel = ExtResource( 17 )
 
-[node name="BattleReport" type="Label" parent="Game/HUD/BattleReport"]
+[node name="BattleReport" type="Label" parent="Game/HUD/BattleReport1"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -252,7 +253,14 @@ custom_fonts/font = SubResource( 14 )
 text = "Battle Report"
 autowrap = true
 
+[node name="BattleReport" parent="Game/HUD" instance=ExtResource( 1 )]
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 896.0
+margin_bottom = 596.0
+
 [node name="GameStats" type="Panel" parent="Game/HUD"]
+visible = false
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -301,7 +309,6 @@ margin_bottom = 14.0
 text = "White"
 
 [node name="HBCWhiteScore" type="HBoxContainer" parent="Game/HUD/GameStats/VBoxContainer"]
-visible = false
 margin_top = 18.0
 margin_right = 252.0
 margin_bottom = 32.0
@@ -318,10 +325,9 @@ margin_bottom = 14.0
 text = "0"
 
 [node name="HBCBlackScore" type="HBoxContainer" parent="Game/HUD/GameStats/VBoxContainer"]
-visible = false
-margin_top = 18.0
+margin_top = 36.0
 margin_right = 252.0
-margin_bottom = 32.0
+margin_bottom = 50.0
 
 [node name="BlkScoreLabel" type="Label" parent="Game/HUD/GameStats/VBoxContainer/HBCBlackScore"]
 margin_right = 89.0
@@ -335,9 +341,9 @@ margin_bottom = 14.0
 text = "0"
 
 [node name="HBCWhiteWins" type="HBoxContainer" parent="Game/HUD/GameStats/VBoxContainer"]
-margin_top = 18.0
+margin_top = 54.0
 margin_right = 252.0
-margin_bottom = 32.0
+margin_bottom = 68.0
 
 [node name="WhtWinsLabel" type="Label" parent="Game/HUD/GameStats/VBoxContainer/HBCWhiteWins"]
 margin_right = 90.0
@@ -351,9 +357,9 @@ margin_bottom = 14.0
 text = "0"
 
 [node name="HBCBlackWins" type="HBoxContainer" parent="Game/HUD/GameStats/VBoxContainer"]
-margin_top = 36.0
+margin_top = 72.0
 margin_right = 252.0
-margin_bottom = 50.0
+margin_bottom = 86.0
 
 [node name="BlkWinsLabel" type="Label" parent="Game/HUD/GameStats/VBoxContainer/HBCBlackWins"]
 margin_right = 90.0
@@ -367,9 +373,9 @@ margin_bottom = 14.0
 text = "0"
 
 [node name="HBCAttackWins" type="HBoxContainer" parent="Game/HUD/GameStats/VBoxContainer"]
-margin_top = 54.0
+margin_top = 90.0
 margin_right = 252.0
-margin_bottom = 68.0
+margin_bottom = 104.0
 
 [node name="AttackWinsLabel" type="Label" parent="Game/HUD/GameStats/VBoxContainer/HBCAttackWins"]
 margin_right = 92.0
@@ -383,9 +389,9 @@ margin_bottom = 14.0
 text = "0"
 
 [node name="HBCDefendWins" type="HBoxContainer" parent="Game/HUD/GameStats/VBoxContainer"]
-margin_top = 72.0
+margin_top = 108.0
 margin_right = 252.0
-margin_bottom = 86.0
+margin_bottom = 122.0
 
 [node name="DefendWinsLabel" type="Label" parent="Game/HUD/GameStats/VBoxContainer/HBCDefendWins"]
 margin_right = 94.0

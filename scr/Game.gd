@@ -2,7 +2,7 @@ extends Node2D
 
 # Game.gd ?
 
-var game_debug = true
+var game_debug = false
 onready var gs = $"../Game"
 onready var tilemap = $"../Game/TileMap"
 onready var batrep = $"../Game/HUD"
@@ -23,29 +23,33 @@ var player_colors
 
 var game_type_node
 var is_multiplayer
+var iamserver = true
 
-var whitescore = '0'
-var blackscore = '0'
-var attackwins = '0'
-var defendwins = "0"
-var whitewins = "0"
-var blackwins = "0"
-var incrsc
+puppetsync var whitescore = '0'
+puppetsync var blackscore = '0'
+puppetsync var attackwins = '0'
+puppetsync var defendwins = "0"
+puppetsync var whitewins = "0"
+puppetsync var blackwins = "0"
+puppetsync var war_levelm = "Level0"
+#puppetsync var war_level = "L0"
+#var incrsc
 var warresult
 var warresultl2 = "AttackWins"
-var battlechance
+puppetsync var battlechance
 var l1_battlechancediv
 #var zattackwon = true
 var attack1
 var attack1type
 var defend1
 var defend1type
-var luck
+puppetsync var luck
 var battlecount = 0
 
 
 onready var config = get_node('/root/PlayersData').call_config()
 onready var war_level = get_node('/root/PlayersData').war_level
+#puppetsync var war_level = get_node('/root/PlayersData').war_level
 onready var rng = get_node('/root/PlayersData').get_rng()
 #onready var l1_battlechancediv = get_node('/root/PlayersData').l1_battlechancediv
 
@@ -54,8 +58,15 @@ signal promotion_done
 
 func _ready():
 	rng.randomize()
+	print("1...war_level in _ready of Game.gd is: ",war_level)
+	#war_level = get_node('/root/PlayersData').war_level
+	#war_level = config.war_level
+	print("2...war_level in _ready of Game.gd is: ",war_level)
 	$TileMap.draw_map()
 	$TileMap.visible = true
+	print("Game.gd, func _ready: Going in war_level and war_levelm are: ", war_level, war_levelm)
+	_on_war_levelm_update(war_level)
+	print("Game.gd, func _ready: Comming out, war_level and war_levelm are: ", war_level, war_levelm)
 	#if war_level == "Level2":
 	#	$'../Game/HUD/GameStats/VBoxContainer/HBCWhiteScore'.visible = true
 	#	$'../Game/HUD/GameStats/VBoxContainer/HBCBlackScore'.visible = true
@@ -66,6 +77,7 @@ func _ready():
 	
 	$Camera2D.set_global_position(Vector2(50, 0))
 	
+	# I think this sets if we ar emultiplayer or single player - duh - dRz
 	if get_tree().has_network_peer ():
 		game_type_node = $"../Multiplayer"
 		is_multiplayer = true
@@ -82,6 +94,28 @@ func _ready():
 	
 	for button in $HUD/PromotionBox.get_children():
 		button.connect('pressed', self, '_on_Promotion_pressed', [button.text])
+
+func _on_whitescore_update(new_score):
+	print("In on_whitescore_update: ", new_score)
+	rset("whitescore", new_score)
+
+
+func _on_blackscore_update(new_score):
+	print("In on_blackscore_update: ", new_score)
+	rset("blackscore", new_score)
+
+func _on_war_levelm_update(new_warlevel):
+	print("Game.gd, In on_war_levelm_update: ", new_warlevel)
+	# this is complaining - why?
+	#rset("war_levelm", new_warlevel)
+
+func _on_battlechance_update(new_chance):
+	print("In _on_battlechance_update: ", new_chance)
+	rset("battlechance", new_chance)
+
+func on_luck_update(new_luck):
+	print("In on_luck_update: ", new_luck)
+	rset("luck", new_luck)
 
 func append_turn_history():
 	var coord_dictionary = {}
@@ -105,8 +139,10 @@ func set_player_colors():
 	if is_multiplayer:
 		if get_tree().is_network_server():
 			player_colors = [get_node('/root/PlayersData').master_color]
+			iamserver = true
 		else:
 			player_colors = [get_node('/root/PlayersData').puppet_color]
+			iamserver = false
 	else:	
 		player_colors = get_node('/root/PlayersData').colors
 	
@@ -121,10 +157,47 @@ func get_defend_color():
 		d_color = 'white'
 	return d_color
 	
+remote func get_battlechance():
+	print("returning battlechance as: battlechance")
+	return battlechance
+
+func set_battlechance():
+	battlechance = randf()
+	print("Just set battlechance to: ", battlechance)
+
+
 	
 func _unhandled_input(event):
 	if event is InputEventMouseButton:
 		if game_debug: print("A - InputEventMouseButton just happened")
+		#if event.button_index == BUTTON_RIGHT and event.pressed and clickable and turn in player_colors:
+		if event.button_index == BUTTON_RIGHT and event.pressed and clickable:
+			var clicked_cell = $TileMap.world_to_map(get_global_mouse_position())
+			if clicked_cell in $TileMap.chessmen_coords:
+				var piece = $TileMap.chessmen_coords[clicked_cell]
+				if piece.tile_position == clicked_cell and piece.color == turn:
+					#var zactive_piece = piece
+					#active_piece = get_node(game_type_node.active_piece_path)
+					print("zzzaaazzz====-----   Active piece is: ", piece.type, piece.current_attack)
+					#$HUD/Game/HUD/AlertDialog.text = "Active piece is: "
+					#$HUD/GameStats/AlertDialog.dialog_text = "zzzaaazzz====-----   Active piece is: "
+					# Try putting new alert here...
+					#$HUD/BattleReport/HUD/PieceStatsDialog.dialog_text = "zzzaaazzz====-----   Active piece is: "
+					var zalerttxt = "Piece Stats:\nCurrent Attack: " + str(piece.current_attack) +  "\nCurrent Defend:  " +  str(piece.current_defend) + "\nCurrent Recuperate:  " + str(piece.recuperate) + "\nCurrent Value:  " + str(piece.value) + "\n..."
+					alert(zalerttxt, 10)
+					#$HUD/BattleReport/HUD/BTGameStats/VBoxContainer/HBCTurn/Turn.text = 'White'
+					#Game/HUD/BattleReport
+					#$HUD.show()
+					$HUD/BattleReport.show()
+					#$HUD/BattleReport/HUD/PieceStatsDialog.show()
+					#$HUD/GameStats.show()
+					#$HUD/GameStats/AlertDialog.show()
+					#$HUD/BattleReport/HUD/PieceStatsDialog.hide()
+			
+			
+			
+			
+			
 		if event.pressed and clickable and turn in player_colors:
 			if game_debug: print("B - this is event.pressed and clickable and turn in player_colors")
 			var clicked_cell = $TileMap.world_to_map(get_global_mouse_position())
@@ -140,11 +213,19 @@ func _unhandled_input(event):
 				
 				var promotion_piece
 				if 'Pawn' == active_piece.type and clicked_cell in $TileMap.promotion_tiles:
-					$HUD/PromotionBox.visible = true
-					$HUD/PromotionBox/Queen.grab_focus()
-					clickable = false
-					$HUD/MenuBox.visible = false
-					promotion_piece = yield(self, "promotion_done")
+					print("Try to fight battle before promotion")
+					print("active_piece, apiece, dpiece", active_piece, " ", apiece, " ", dpiece)
+					warresultl2 = yield(cwl2(active_piece, dpiece), "completed")
+					warresult = warresultl2
+					if warresult == "AttackWins":
+						print("AttackWins do promotion routine!")
+						$HUD/PromotionBox.visible = true
+						$HUD/PromotionBox/Queen.grab_focus()
+						clickable = false
+						$HUD/MenuBox.visible = false
+						promotion_piece = yield(self, "promotion_done")
+					else:
+						print("DefendWins - no promotion for you today!")
 					
 				change_turns()
 				# I think this below was drew's doing and needs to be changed for hte new BattleReport popup panel
@@ -193,7 +274,11 @@ func update_stats_display():
 	$HUD/BattleReport/HUD/BTGameStats/VBoxContainer/HBCDefendWins/DefendWinsNum.text = defendwins
 	#$c/BattleReport/HUD/BTGameStats/VBoxContainer/HBCDefendWins/DefendWinsNum.text = defendwins
 
-
+func alert(txt, duration = 1.0):
+	#$HUD/Alert/HUD/Alert.open(txt, duration)
+	#$HUD/Alert/c/Alert/c
+	#$ColorRect/Alert.open(txt, duration)
+	pass
 
 func cwl1(apiece, dpiece):
 	if game_debug: print("In Chess War L1")
@@ -215,7 +300,24 @@ func cwl1(apiece, dpiece):
 	if game_debug: print("Defender: ", dpiece)
 	$HUD/BattleReport/HUD/BattleReport/BRLabel.bbcode_text = $HUD/BattleReport/HUD/BattleReport/BRLabel.bbcode_text + "Defender: " + str(dpiece) + "\n"
 	#$HUD/BattleReport/BattleReport.text = $HUD/BattleReport/BattleReport.text + "Defender: " + str(dpiece) + "\n"
-	battlechance = randf()
+	if is_multiplayer:
+		print("This is a multiplayer l1 game.")
+		if iamserver:
+			print("I am the server...")
+			set_battlechance()
+			battlechance = get_battlechance()
+			_on_battlechance_update(battlechance)
+			# gotta get this to client
+		else:
+			print("I am a client...")
+			# i am a client, does the server give me the random number or do i go get it?
+			battlechance = game_type_node.rpc.get_battlechance()
+			rpc(_on_battlechance_update(battlechance))
+			pass
+	else:
+		print("This is single player level1")
+		# single player
+		battlechance = randf()
 	if game_debug: print("Battlechance is: ",battlechance)
 	$HUD/BattleReport/HUD/BattleReport/BRLabel.bbcode_text = $HUD/BattleReport/HUD/BattleReport/BRLabel.bbcode_text + "Battlechance is: "+ str(battlechance) + "\n"
 	#$HUD/BattleReport/BattleReport.text = $HUD/BattleReport/BattleReport.text + "Battlechance is: "+ str(battlechance) + "\n"
@@ -262,6 +364,7 @@ func cwl1(apiece, dpiece):
 
 
 func cwl2(apiece, dpiece):
+	var tscore = 0
 	#$Control/BattleReport/HUD.show()
 	#$Options.show()
 	#$'../Game/HUD/BattleReport'.show()
@@ -315,7 +418,15 @@ func cwl2(apiece, dpiece):
 		#	zo = zo + 1
 		#$HUD/BattleReport/BattleReport.text = $HUD/BattleReport/BattleReport.text + "=====After delay loop.==\n"
 		if game_debug: print("A1 - Attack = ", attack1, "            |            Defend = ", defend1,"")
-		luck = rng.randi_range(0,8)
+		if is_multiplayer:
+			if iamserver:
+				var tluck = rng.randi_range(0,8)
+				on_luck_update(tluck)
+			else:
+				print("Luck is now: ", luck)
+		else:
+			luck = rng.randi_range(0,8)
+		#luck = rng.randi_range(0,8)
 		if luck == 0:
 			if game_debug: print("The attacking ", apiece.color, " ", apiece.type, " lands a mighty blow!")
 			$HUD/BattleReport/HUD/BattleReport/BRLabel.bbcode_text = $HUD/BattleReport/HUD/BattleReport/BRLabel.bbcode_text + "[color=aqua]The attacking " + apiece.color + " " + attack1type + " lands a mighty blow![/color]\n"
@@ -389,13 +500,18 @@ func cwl2(apiece, dpiece):
 		$HUD/BattleReport/HUD/BattleReport/BRLabel.bbcode_text = $HUD/BattleReport/HUD/BattleReport/BRLabel.bbcode_text + "The attacking " + apiece.color + " " + attack1type + " defeated the defending " + dpiece.color + " " + defend1type + "!\n"
 		#if game_debug: print("Setting warresult to Attackwins in Level: ", war_level)
 		#warresult = "AttackWins" # Not Needed?
-		incrsc = apiece.value
+		#incrsc = apiece.value
 		if attack1 == 0:
 			attack1 = 1
 			if game_debug: print("defend1 was 0 and attack1 was 0 so we made attack1 equal 1")
 		apiece.current_attack = attack1
-		if game_debug: print("incrsc is: ", incrsc)
+		#if game_debug: print("incrsc is: ", incrsc)
 		if apiece.color == 'white':
+			#tscore = str(int(whitescore) + dpiece.value)
+			#if get_tree().is_network_server():
+			#	_on_whitescore_update(tscore)
+			#else:
+			#	whitescore = tscore
 			whitescore = str(int(whitescore) + dpiece.value)
 			$'../Game/HUD/GameStats/VBoxContainer/HBCWhiteScore/WhtScoreNum'.text = whitescore
 			if game_debug: print("whitewins is: ", whitewins)
@@ -421,7 +537,7 @@ func cwl2(apiece, dpiece):
 		$HUD/BattleReport/HUD/BattleReport/BRLabel.bbcode_text = $HUD/BattleReport/HUD/BattleReport/BRLabel.bbcode_text + "The defending " + dpiece.color + " " + defend1type +  " defeated the attacking " + apiece.color + " " + attack1type + " !\n"
 		#if game_debug: print("Setting warresult to DefendWins in Level: ", war_level)
 		#warrestul = "DefendWins #not needed ?
-		incrsc = dpiece.value
+		#incrsc = dpiece.value
 		if apiece.color == 'white':
 			blackscore = str(int(blackscore) + apiece.value)
 			$'../Game/HUD/GameStats/VBoxContainer/HBCBlackScore/BlkScoreNum'.text = blackscore
@@ -447,6 +563,7 @@ func player_turn(clicked_cell, sync_mult = false):
 	warresult = "AttackWins"
 	if game_debug: print("G - at top of player_turn")
 	if sync_mult:
+		print("game_type_node is: ",game_type_node)
 		active_piece = get_node(game_type_node.active_piece_path)
 		apiece = active_piece
 		
@@ -484,6 +601,15 @@ func player_turn(clicked_cell, sync_mult = false):
 			# should neve get here but just in case and
 			# to make adding new levels easier
 			if game_debug: print("If we got here, something went wrong, pretend.")
+			#warresult = _on_whitescore_update("9999")
+			#print("Level ERROR war result ws is: ", warresult)
+			#warresult = "AttackWins"
+			# forcing things in this way gets both players showing battle results
+			# but the battles are not in sync
+			# this has to be fixed.
+			#warresultl2 = yield(cwl2(active_piece, dpiece), "completed")
+			#warresult = warresultl2
+			#warresult = cwl1(active_piece, dpiece)
 			warresult = "AttackWins"
 			print("Level ERROR war result is: ", warresult)
 		

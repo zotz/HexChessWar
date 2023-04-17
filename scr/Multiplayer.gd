@@ -2,10 +2,25 @@ extends Node
 
 var new_game_request
 var active_piece_path
+puppet var whitescore
+puppet var blackscore
+puppet var whitewins
+puppet var blackwins
+puppet var attackwins
+puppet var defendwins
+puppet var war_levelm
 
 onready var gs = $"../Game"
 onready var peer = get_node('/root/PlayersData').peer
 onready var tilemap = $"../Game/TileMap"
+
+#onready var war_level = get_node('/root/PlayersData').war_level
+var war_level
+
+func _ready():
+	# try to brute force things for a bit
+	war_level = get_node('/root/PlayersData').war_level
+	war_level = "Level2"
 
 func multiplayer_configs():
 	gs.rpc_config("player_turn", 1)
@@ -13,11 +28,18 @@ func multiplayer_configs():
 	gs.rpc_config('threefold_rule', 1)
 	gs.rpc_config("game_over", 1)
 	# ok drew, time to learn / try a bit about rpc stuff
-	gs.rpc_config("whitescore", 1)
+	#  try puppet instead?
+	#gs.rpc_config("whitescore", 1)
 	gs.rpc_config("blackscore", 1)
+	
+	# drew inserts here
+	gs.rpc_config("cwl1", 1)
+	gs.rpc_config("cwl2", 1)
+	gs.rpc_config("get_battlechance", 1)
 	
 	gs.rset_config("clickable", 1)
 	gs.rset_config("range_of_movement", 1)
+	gs.rset_config("war_level", 1)
 	
 	rset_config("new_game_request", 1)
 	rset_config("active_piece_path", 1)
@@ -32,12 +54,14 @@ func multiplayer_configs():
 	rpc_config("set_possible_moves", 1)
 	rpc_config("change_turns", 1)
 	# ok drew, time to learn / try a bit about rpc stuff
+	print("gs.war_level: ",gs.war_level)
+	print("in Multiplayer.gd, in func multiplayer_configs, war_level: ",war_level)
 
 	
 func prepare_game():
 	multiplayer_configs()
 	announcement('you will play as ' + gs.player_colors[0])
-	
+	war_level = war_levelm
 # warning-ignore:return_value_discarded
 	get_tree().connect("network_peer_disconnected", self, "_player_disconnected")
 # warning-ignore:return_value_discarded
@@ -89,6 +113,11 @@ func server_place_pieces():
 	rpc('sync_pieces', name_list)
 	
 func sync_multiplayer(clicked_cell):
+	print("In Multiplayer sync_multiplayer")
+	print("====================     war_level is: ", war_level)
+	print("war_levelm is: ", war_levelm)
+	print("peer is: ", peer)
+	print("whitescore is: ", whitescore)
 	rset("active_piece_path", str(gs.active_piece.get_path()))
 	
 	gs.rpc("player_turn", clicked_cell, true)
@@ -104,11 +133,13 @@ func sync_promotion(piece):
 	gs.clickable = true
 
 func sync_kill_piece(piece_path):
+	print("In myltiplayer sync_kill_piece")
 	var piece = get_node(piece_path)
 	
 	tilemap.kill_piece(piece)
 
 func sync_pieces(name_list):
+	print("In multiplayer sync_pieces")
 	tilemap.place_pieces()
 	var iteration = 0
 	for piece in tilemap.chessmen_list:

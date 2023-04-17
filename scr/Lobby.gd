@@ -14,6 +14,8 @@ onready var text_panel = $TextPanel
 onready var host_button = $VBoxContainer/Host
 onready var join_button = $VBoxContainer/Join
 
+onready var config = get_node('/root/PlayersData').call_config()
+
 var peer = null
 var color_index
 
@@ -22,10 +24,13 @@ func _ready():
 	get_tree().connect("network_peer_connected", self, "_player_connected")
 # warning-ignore:return_value_discarded
 	get_tree().connect("connection_failed", self, "_connected_fail")
+	get_node('/root/PlayersData').war_level = config.get_value('options', 'war_level')
 	
 	rset_config("color_index", 1)
 	rpc_config("set_colors", 1)
 	rpc_config("set_chess_types", 1)
+	rpc_config("set_war_level", 1)
+	
 	
 func _player_connected(_id):
 	generate_color_index()
@@ -47,10 +52,15 @@ func set_colors(color_index_local):
 	
 	if get_tree().is_network_server():
 		set_chess_types()
+		#set_war_level()
+
+
+
+
 
 func set_chess_types(chess_type = null):
 	if chess_type == null:
-		var config = get_node('/root/PlayersData').call_config()
+		#var config = get_node('/root/PlayersData').call_config()
 		get_node('/root/PlayersData').chess_type = config.get_value('options', 'chess_type')
 		rpc('set_chess_types', config.get_value('options', 'chess_type'))
 		
@@ -59,6 +69,20 @@ func set_chess_types(chess_type = null):
 	
 # warning-ignore:return_value_discarded
 	get_tree().change_scene("res://scenes/board.tscn")
+
+#func set_war_level(war_level = null):
+#	if war_level == null:
+#		#var config = get_node('/root/PlayersData').call_config()
+#		get_node('/root/PlayersData').war_level = config.get_value('options', 'war_level')
+#		rpc('set_war_level', config.get_value('options', 'war_level'))
+#		
+#	else:
+#		get_node('/root/PlayersData').war_level = war_level
+#	
+# warning-ignore:return_value_discarded
+#	# Do I need this below.
+#	get_tree().change_scene("res://scenes/board.tscn")
+
 	
 func _connected_fail():
 	_set_status("Couldn't connect", false)

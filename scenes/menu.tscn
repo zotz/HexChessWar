@@ -82,7 +82,7 @@ rect_scale = Vector2( 0.3, 0.3 )
 hint_tooltip = "Back to Menu"
 texture = ExtResource( 2 )
 
-[node name="BattleReport" parent="ColorRect" instance=ExtResource( 8 )]
+[node name="BattleReport_menu" parent="ColorRect" instance=ExtResource( 8 )]
 margin_left = 375.0
 margin_top = 111.0
 margin_right = 632.0

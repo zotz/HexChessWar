@@ -560,10 +560,31 @@ func cwl2(apiece, dpiece):
 		warresult = "DefendWins"
 		return warresult
 
-
+func do_recuperate():
+	# this is where we go through each piece and regain some health each round
+	print("In do_recuperate...")
+	for piece in $TileMap.chessmen_list:
+		#print("This piece is: ", piece.color, " ", piece.type)
+		#print("Current attack, defend= ",piece.current_attack," ", piece.current_defend)
+		# what is the recovery play
+		#if game_debug: print("Before recuperate: ", piece.current_attack, " | ", piece.current_defend,"")
+		#print("After recuperate:  ", piece.current_attack, " | ", piece.current_defend)
+		if piece.current_attack < piece.max_attack:
+			if game_debug: print("Piece is recovering attack strength!")
+			piece.current_attack = piece.current_attack + (piece.current_attack * piece.recuperate)
+			if piece.current_attack > piece.max_attack:
+				piece.current_attack = piece.max_attack
+		if piece.current_defend < piece.max_defend:
+			if game_debug: print("Piece is recovering defend strength!")
+			piece.current_defend = piece.current_defend + (piece.current_defend * piece.recuperate)
+			if piece.current_defend > piece.max_defend:
+				piece.current_defend = piece.max_defend
+		if game_debug: print("After recuperate:  ", piece.current_attack, " | ", piece.current_defend)
 
 
 func player_turn(clicked_cell, sync_mult = false):
+	# I  think we should recover here print("======================== Should we recover here? ==============")
+	do_recuperate()
 	warresult = "AttackWins"
 	if game_debug: print("G - at top of player_turn")
 	if sync_mult:

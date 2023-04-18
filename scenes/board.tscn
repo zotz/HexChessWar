@@ -247,14 +247,6 @@ size_flags_horizontal = 2
 size_flags_vertical = 2
 custom_styles/panel = ExtResource( 17 )
 
-[node name="AlertDialog" type="AcceptDialog" parent="Game/HUD/GameStats"]
-visible = true
-margin_left = -8.0
-margin_top = -284.0
-margin_right = 118.0
-margin_bottom = -226.0
-dialog_text = "This is your alert."
-
 [node name="GameStats" type="Label" parent="Game/HUD/GameStats"]
 anchor_left = 0.5
 anchor_top = 0.5
@@ -619,12 +611,14 @@ rect_scale = Vector2( 0.3, 0.3 )
 hint_tooltip = "Back to Menu"
 texture = ExtResource( 4 )
 
-[node name="Alert" parent="Game/HUD" instance=ExtResource( 24 )]
-
 [node name="Camera2D" type="Camera2D" parent="Game"]
 visible = false
 current = true
 zoom = Vector2( 2.2, 2.2 )
+
+[node name="Alert" parent="Game" instance=ExtResource( 24 )]
+margin_right = 822.0
+margin_bottom = 65.0
 
 [connection signal="pressed" from="Game/HUD/DrawOffer/Accept" to="Multiplayer" method="_on_Accept_pressed"]
 [connection signal="pressed" from="Game/HUD/DrawOffer/Decline" to="Multiplayer" method="_on_Decline_pressed"]

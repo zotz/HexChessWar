@@ -172,27 +172,21 @@ func _unhandled_input(event):
 		if game_debug: print("A - InputEventMouseButton just happened")
 		#if event.button_index == BUTTON_RIGHT and event.pressed and clickable and turn in player_colors:
 		if event.button_index == BUTTON_RIGHT and event.pressed and clickable:
+			var other_pos = get_viewport().get_mouse_position()
+			var opx = other_pos.x
+			var opy = other_pos.y
+			print("opx,opy are: ",opx," ",opy)
 			var clicked_cell = $TileMap.world_to_map(get_global_mouse_position())
 			if clicked_cell in $TileMap.chessmen_coords:
 				var piece = $TileMap.chessmen_coords[clicked_cell]
 				if piece.tile_position == clicked_cell and piece.color == turn:
-					#var zactive_piece = piece
 					#active_piece = get_node(game_type_node.active_piece_path)
-					print("zzzaaazzz====-----   Active piece is: ", piece.type, piece.current_attack)
-					#$HUD/Game/HUD/AlertDialog.text = "Active piece is: "
-					#$HUD/GameStats/AlertDialog.dialog_text = "zzzaaazzz====-----   Active piece is: "
+					#print("zzzaaazzz====-----   Active piece is: ", piece.type, " ", piece.current_attack, " ", piece.current_defend, " ", piece.recuperate, " ", piece.value)
 					# Try putting new alert here...
-					#$HUD/BattleReport/HUD/PieceStatsDialog.dialog_text = "zzzaaazzz====-----   Active piece is: "
-					var zalerttxt = "Piece Stats:\nCurrent Attack: " + str(piece.current_attack) +  "\nCurrent Defend:  " +  str(piece.current_defend) + "\nCurrent Recuperate:  " + str(piece.recuperate) + "\nCurrent Value:  " + str(piece.value) + "\n..."
-					alert(zalerttxt, 10)
-					#$HUD/BattleReport/HUD/BTGameStats/VBoxContainer/HBCTurn/Turn.text = 'White'
-					#Game/HUD/BattleReport
-					#$HUD.show()
+					var zalerttxt = "Piece " + piece.color + " " + piece.type + " Stats:\nCurrent Attack: " + str(piece.current_attack) +  "\nCurrent Defend:  " +  str(piece.current_defend) + "\nCurrent Recuperate:  " + str(piece.recuperate) + "\nCurrent Value:  " + str(piece.value) + "\n..."
+					alert(zalerttxt, 3)
+					$Alert.rect_position = Vector2(opx-300, opy-300)
 					$HUD/BattleReport.show()
-					#$HUD/BattleReport/HUD/PieceStatsDialog.show()
-					#$HUD/GameStats.show()
-					#$HUD/GameStats/AlertDialog.show()
-					#$HUD/BattleReport/HUD/PieceStatsDialog.hide()
 			
 			
 			
@@ -275,10 +269,18 @@ func update_stats_display():
 	#$c/BattleReport/HUD/BTGameStats/VBoxContainer/HBCDefendWins/DefendWinsNum.text = defendwins
 
 func alert(txt, duration = 1.0):
-	#$HUD/Alert/HUD/Alert.open(txt, duration)
+	#$HUD/Alert/HUD/Alert.open(txt, duration) # BAD - error
 	#$HUD/Alert/c/Alert/c
-	#$ColorRect/Alert.open(txt, duration)
-	pass
+	#$HUD.show()
+	#$HUD/Alert/c.show()
+	#$HUD/Alert.open(txt, duration) # does not error but no popup
+	#$Alert.open(txt, duration) # does not error but no popup
+	$Alert.open(txt, duration) # does not error but no popup
+	#$c/Alert.open(txt, duration) # does not error but no popup
+	#$HUD.hide()
+	#$'/Game/HUD/Alert'.open(txt, duration) # BAD - error
+	#print("Trying to alert here... ", txt)
+
 
 func cwl1(apiece, dpiece):
 	if game_debug: print("In Chess War L1")
@@ -402,7 +404,7 @@ func cwl2(apiece, dpiece):
 	#while (attack1 > 0) && (defend1 > 0):
 	if game_debug: print("cwl2 before while: ", attack1, " | ", defend1)
 	var battlerounds = 0
-	var battlereportrounds = 15
+	#var battlereportrounds = 15
 	while (attack1 > 0) and (defend1 > 0):
 		# trying to run this loop slower
 		if game_debug: print("Trying to yeild for a time...")
@@ -418,6 +420,8 @@ func cwl2(apiece, dpiece):
 		#	zo = zo + 1
 		#$HUD/BattleReport/BattleReport.text = $HUD/BattleReport/BattleReport.text + "=====After delay loop.==\n"
 		if game_debug: print("A1 - Attack = ", attack1, "            |            Defend = ", defend1,"")
+		# Three is a problem with syncing luck the way I am trying to.
+		# I need to ponder this...
 		if is_multiplayer:
 			if iamserver:
 				var tluck = rng.randi_range(0,8)
@@ -481,9 +485,9 @@ func cwl2(apiece, dpiece):
 			if game_debug: print("defend1 is now: ", defend1)
 		battlerounds = battlerounds +1
 		if game_debug: print("battlerounds is now: ", battlerounds)
-		if battlerounds == battlereportrounds:
-			battlerounds = 0
-			$HUD/BattleReport/HUD/BattleReport/BRLabel.bbcode_text = "The battle continues.\n"
+		#if battlerounds == battlereportrounds:
+		#	battlerounds = 0
+		#	$HUD/BattleReport/HUD/BattleReport/BRLabel.bbcode_text = "The battle continues.\n"
 	if game_debug: print("A2 - Attack = ", attack1, "            |            Defend = ", defend1,"")
 	$HUD/BattleReport/HUD/BattleReport/BRLabel.bbcode_text = $HUD/BattleReport/HUD/BattleReport/BRLabel.bbcode_text + "Attack = " + str(attack1) + "            |            Defend = " + str(defend1) + "\n"
 	if game_debug: print("before defend1 == 0 check, defend1 is now: ", defend1, " attack1 is now: ",attack1)

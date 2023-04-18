@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://fonts/NixieOne.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://icons/back.png" type="Texture" id=2]
@@ -6,7 +6,6 @@
 [ext_resource path="res://res/menu_buttons.tres" type="StyleBox" id=4]
 [ext_resource path="res://scr/Lobby.gd" type="Script" id=5]
 [ext_resource path="res://scr/Menu.gd" type="Script" id=6]
-[ext_resource path="res://scenes/BattleReport.tscn" type="PackedScene" id=8]
 
 [sub_resource type="Theme" id=13]
 
@@ -81,12 +80,6 @@ grow_vertical = 2
 rect_scale = Vector2( 0.3, 0.3 )
 hint_tooltip = "Back to Menu"
 texture = ExtResource( 2 )
-
-[node name="BattleReport_menu" parent="ColorRect" instance=ExtResource( 8 )]
-margin_left = 375.0
-margin_top = 111.0
-margin_right = 632.0
-margin_bottom = 210.0
 
 [node name="Menu" type="Control" parent="."]
 margin_right = 40.0

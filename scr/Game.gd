@@ -426,8 +426,10 @@ func cwl2(apiece, dpiece):
 			if iamserver:
 				var tluck = rng.randi_range(0,8)
 				on_luck_update(tluck)
+				print("This is multiplayer hosting. Battlerounds = ", battlerounds, " L ", luck, " ", attack1, " ", defend1)
 			else:
 				print("Luck is now: ", luck)
+				print("This is multiplayer joining. Battlerounds = ",battlerounds, " L ", luck, " ", attack1, " ", defend1)
 		else:
 			luck = rng.randi_range(0,8)
 		#luck = rng.randi_range(0,8)
@@ -436,6 +438,8 @@ func cwl2(apiece, dpiece):
 			$HUD/BattleReport/HUD/BattleReport/BRLabel.bbcode_text = $HUD/BattleReport/HUD/BattleReport/BRLabel.bbcode_text + "[color=aqua]The attacking " + apiece.color + " " + attack1type + " lands a mighty blow![/color]\n"
 			defend1 = int((defend1 * 5) / 6 )
 			if game_debug: print("defend1 is now: ", defend1)
+		if luck == null:
+			battlerounds = battlerounds - 1
 		if luck == 1:
 			if game_debug: print("D1 - The defending ", dpiece, " gets in a gallant thrust!")
 			$HUD/BattleReport/HUD/BattleReport/BRLabel.bbcode_text = $HUD/BattleReport/HUD/BattleReport/BRLabel.bbcode_text + "[color=yellow]The defending " + dpiece.color + " " + defend1type + " gets in a gallant thrust![/color]\n"
